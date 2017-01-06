@@ -7,7 +7,7 @@ package g3Robotics;
 public class Constants {
 
 	//PWM Outputs
-	public static final int leftDrivePWM1 = 3;
+	public static final int leftDrivePWM1 = 2;
 	public static final int rightDrivePWM1 = 10;
 	
 	//Solenoid Outputs
