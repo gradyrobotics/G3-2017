@@ -9,6 +9,7 @@ public class Constants {
 	//PWM Outputs
 	public static final int leftDrivePWM1 = 5; //changed from 2 to 1
 	public static final int rightDrivePWM1 = 10;
+	public static final int leftDrivePWM2 = 6;
 	
 	//Solenoid Outputs
 	
