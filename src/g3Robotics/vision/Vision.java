@@ -11,14 +11,16 @@ import g3Robotics.vision.GripPipeline;
 import g3Robotics.*;
 
 public class Vision {
+	
     private static final int Image_Width = 320;
     private static final int Image_Height = 240;
-    private static double centerX = 0.0;
+    public double centerX = 0.0;
+    public double centerY = 0.0;
     
     private VisionThread visionThread;
     
 	private static Vision instance = null;
-	private final Object imgLock = new Object();
+	public final Object imgLock = new Object();
 
     public static Vision getInstance()
     {
@@ -40,10 +42,17 @@ public class Vision {
             	Rect boundingBox = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
             	synchronized (imgLock) {
             		centerX = boundingBox.x + (boundingBox.width / 2);
+            		centerY = boundingBox.y + (boundingBox.height / 2);
             	}
             }	
     	});
     	
     	visionThread.start();
+    }
+    public double getCenterX(){
+    	return centerX;
+    }
+    public double getCenterY(){
+    	return centerY;
     }
 }
