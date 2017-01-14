@@ -15,8 +15,6 @@ public abstract class State
 {
     private final String mName;
     protected final Drive mDrive;
-    
-
    
     /**
      * Create a new state.

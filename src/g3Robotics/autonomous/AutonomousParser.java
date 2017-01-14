@@ -49,7 +49,12 @@ public class AutonomousParser
                         //double lParam3 = mProperties.getDoubleValue("AutonomousThirdParam" + Integer.toString(i+1), 0);
                         lStates[i] = new MixedDrive(lParam1);
                     }
-                    
+                    else if (lStateName.equals("LineUpGoal"))
+                    {
+                    	//double lParam1 = mProperties.getDoubleValue("AutonomousFirstParam" + Integer.toString(i+1), 0);
+                    	
+                    	lStates[i] = new LineUpGoal();
+                    }
                     //TODO: Add additional States as they are developed
                     /*
                     // Example:

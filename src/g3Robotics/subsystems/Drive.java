@@ -15,8 +15,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Drive extends G3Subsystem
 {
     // Actuators
-    private final Talon leftMotor1;
-    private final Talon rightMotor1;
+    private final VictorSP leftMotor1;
+    private final VictorSP rightMotor1;
     
     // Sensors
     private Encoder leftEncoder;
@@ -36,8 +36,8 @@ public class Drive extends G3Subsystem
 
     private Drive()
     {
-        leftMotor1 = new Talon(Constants.leftDrivePWM1);
-        rightMotor1 = new Talon(Constants.rightDrivePWM1);
+        leftMotor1 = new VictorSP(Constants.leftDrivePWM1);
+        rightMotor1 = new VictorSP(Constants.rightDrivePWM1);
         pdp = new PowerDistributionPanel();
         
 
@@ -62,7 +62,6 @@ public class Drive extends G3Subsystem
     
     private void set(double left, double right)
     {
-        
         leftMotor1.set(left);
         rightMotor1.set(-right);
     }
@@ -72,7 +71,6 @@ public class Drive extends G3Subsystem
     	return pdp.getTotalCurrent();
     }
     
-
     public void driveSpeedTurn(double speed, double turn)
     {
     	double left;
