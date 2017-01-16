@@ -20,24 +20,29 @@ public class LineUpGoal extends State
 	private double offsetX;
 	private double offsetY;
 	private Timer timer;
+	private final Vision mVision;
 	
 	public LineUpGoal()
 	{
 		super("LineUpGoal");
+		mVision = Vision.getInstance();
 	}
 	
 	public void enter()
 	{
 		mDrive.resetEncoders();
 		mDrive.reset();
-		//Somehow grab center x and y, and do calculations
+		mVision.VisionInit();
+		offsetX = mVision.getCenterX() - 160;
+		offsetY = mVision.getCenterY() - 120;
 	}
 	
 	public void running() 
 	{
 		mDrive.setOpenLoop();
 		mDrive.driveSpeedTurn(0, 0.7);
-		//Refer to the comment above for this space
+		offsetX = mVision.getCenterX() - 160;
+		offsetY = mVision.getCenterY() - 120;
 	}
 
 	public boolean isDone()	 
