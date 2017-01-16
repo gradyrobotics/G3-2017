@@ -23,6 +23,7 @@ public class Robot extends IterativeRobot {
     final String customAuto = "My Auto";
     String autoSelected;
     SendableChooser chooser;
+    
 	
     Vision mVision;
     Drive mDrive;
@@ -30,6 +31,7 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	mDrive.getInstance();
     	mOI.getInstance();
+    	
     	
     }
     
@@ -67,7 +69,10 @@ public class Robot extends IterativeRobot {
     }
     
     public void logToDashboard() {
-    	
+    	SmartDashboard.putNumber("Left Encoder Distance: ", mDrive.getLeftDistance());
+    	SmartDashboard.putNumber("Right Encoder Distance: ", mDrive.getRightDistance());
+    	SmartDashboard.putNumber("Left Encoder Speed: ", mDrive.getLeftSpeed());
+    	SmartDashboard.putNumber("Right Encoder Speed: ", mDrive.getRightSpeed());
     }
     
 }
