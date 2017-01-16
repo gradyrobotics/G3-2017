@@ -14,8 +14,10 @@ public class Vision {
 	
     private static final int Image_Width = 320;
     private static final int Image_Height = 240;
-    public double centerX = 0.0;
-    public double centerY = 0.0;
+    private double centerX = 0.0;
+    private double centerY = 0.0;
+    private double xOffset = 0.0;
+    private double yOffset = 0.0;
     
     private VisionThread visionThread;
     
@@ -48,11 +50,27 @@ public class Vision {
     	});
     	
     	visionThread.start();
+    	
+    	
+    }
+    
+    public synchronized void findTarget() {
+    	synchronized(imgLock) {
+    		xOffset = centerX - Image_Width/2;
+    		yOffset = centerY - Image_Height/2;
+    	}
     }
     public double getCenterX(){
     	return centerX;
     }
     public double getCenterY(){
     	return centerY;
+    }
+    
+    public double getXOffset(){
+    	return xOffset;
+    }
+    public double getYOffset(){
+    	return yOffset;
     }
 }
