@@ -7,10 +7,10 @@ package g3Robotics;
 public class Constants {
 
 	//PWM Outputs
-	public static final int leftDrivePWM1 = 0; //changed from 2 to 1
-	public static final int rightDrivePWM1 = 9;
-	public static final int leftDrivePWM2 = 1; //changed from 2 to 1
-	public static final int rightDrivePWM2 = 8;
+	public static final int leftDrivePWM1 = 0; 
+	public static final int leftDrivePWM2 = 1; 
+	public static final int rightDrivePWM1 = 2;
+	public static final int rightDrivePWM2 = 3;
 	
 	//Solenoid Outputs
 	
@@ -19,8 +19,8 @@ public class Constants {
 	//Digital Inputs
 	public static final int leftDriveDI1 = 0;
 	public static final int leftDriveDI2 = 1;
-	public static final int rightDriveDI1 = 8;
-	public static final int rightDriveDI2 = 9;
+	public static final int rightDriveDI1 = 2;
+	public static final int rightDriveDI2 = 3;
 	
 	//Analog Inputs
 	
