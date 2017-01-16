@@ -25,8 +25,11 @@ public class Robot extends IterativeRobot {
     SendableChooser chooser;
 	
     Vision mVision;
-    
+    Drive mDrive;
+    OI mOI;
     public void robotInit() {
+    	mDrive.getInstance();
+    	mOI.getInstance();
     	
     }
     
@@ -53,7 +56,7 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        
+        mOI.processInputs();
     }
     
     /**
@@ -61,6 +64,10 @@ public class Robot extends IterativeRobot {
      */
     public void testPeriodic() {
     
+    }
+    
+    public void logToDashboard() {
+    	
     }
     
 }
