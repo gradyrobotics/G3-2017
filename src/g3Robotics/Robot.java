@@ -59,6 +59,7 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         mOI.processInputs();
+        logToDashboard();
     }
     
     /**
