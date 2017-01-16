@@ -33,20 +33,24 @@ public class LineUpGoal extends State
 		mDrive.resetEncoders();
 		mDrive.reset();
 		mVision.VisionInit();
-		offsetX = mVision.getCenterX() - 160;
-		offsetY = mVision.getCenterY() - 120;
+		mVision.findTarget();
+		offsetX = mVision.getXOffset();
+		offsetY = mVision.getYOffset();
 	}
 	
 	public void running() 
 	{
 		mDrive.setOpenLoop();
-		mDrive.driveSpeedTurn(0, 0.7);
-		offsetX = mVision.getCenterX() - 160;
-		offsetY = mVision.getCenterY() - 120;
+		//mDrive.driveSpeedTurn(0, 0.7);
+		mVision.findTarget(); // update offset values. 
+		offsetX = mVision.getXOffset();
+		offsetY = mVision.getYOffset();
+		
+		mDrive.driveSpeedTurn(0.0, -.3 * offsetX); //Proportional gain for turning based on X offset. 
 	}
 
 	public boolean isDone()	 
 	{
-		return ((offsetX > 0.1) && (offsetY > 0.1));
+		return (Math.abs(offsetX) < 2) && (Math.abs(offsetY) < 2); //4 pixel threashold.
 	}
 }
