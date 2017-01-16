@@ -44,11 +44,11 @@ public class Drive extends G3Subsystem
         pdp = new PowerDistributionPanel();
         
 
-        double encoderScalingFactor = (0.5*Constants.WheelSizeIn*Math.PI)/128;
-        //leftEncoder = new Encoder(Constants.LeftDriveDI1, Constants.LeftDriveDI2);
-        //leftEncoder.setDistancePerPulse(encoderScalingFactor);
-        //rightEncoder = new Encoder(Constants.RightDriveDI1, Constants.RightDriveDI2);
-        //rightEncoder.setDistancePerPulse(-encoderScalingFactor);
+        double encoderScalingFactor = (Constants.WheelSizeIn*Math.PI)/128;
+        leftEncoder = new Encoder(Constants.leftDriveDI1, Constants.leftDriveDI2);
+        leftEncoder.setDistancePerPulse(encoderScalingFactor);
+        rightEncoder = new Encoder(Constants.rightDriveDI1, Constants.rightDriveDI2);
+        rightEncoder.setDistancePerPulse(-encoderScalingFactor);
         
         
     }

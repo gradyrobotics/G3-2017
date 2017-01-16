@@ -17,6 +17,10 @@ public class Constants {
 	//Relay Outputs
 	
 	//Digital Inputs
+	public static final int leftDriveDI1 = 0;
+	public static final int leftDriveDI2 = 1;
+	public static final int rightDriveDI1 = 8;
+	public static final int rightDriveDI2 = 9;
 	
 	//Analog Inputs
 	
