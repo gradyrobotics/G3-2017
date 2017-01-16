@@ -17,8 +17,7 @@ public class Drive extends G3Subsystem
     // Actuators
     private final VictorSP leftMotor1;
     private final VictorSP rightMotor1;
-    private final VictorSP leftMotor2;
-    private final VictorSP rightMotor2;
+   
     // Sensors
     private Encoder leftEncoder;
     private Encoder rightEncoder;
@@ -37,10 +36,9 @@ public class Drive extends G3Subsystem
 
     private Drive()
     {
-        leftMotor1 = new VictorSP(Constants.leftDrivePWM1);
-        rightMotor1 = new VictorSP(Constants.rightDrivePWM1);
-        leftMotor2 = new VictorSP(Constants.leftDrivePWM2);
-        rightMotor2 = new VictorSP(Constants.rightDrivePWM2);
+        leftMotor1 = new VictorSP(Constants.leftDrivePWM);
+        rightMotor1 = new VictorSP(Constants.rightDrivePWM);
+        
         pdp = new PowerDistributionPanel();
         
 
@@ -67,8 +65,7 @@ public class Drive extends G3Subsystem
     {
         leftMotor1.set(left);
         rightMotor1.set(-right);
-        leftMotor2.set(left);
-        rightMotor2.set(-right);
+        
     }
     
     public double getTotalCurrent()
