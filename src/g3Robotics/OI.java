@@ -30,8 +30,25 @@ public class OI
 
 	public void processInputs()
 	{
-		speedCommand  = driverGamepad.getLeftYAxis();
-		turnCommand = driverGamepad.getRightXAxis();
+		if(Math.abs(driverGamepad.getLeftYAxis()) > 0.1)
+		{
+			speedCommand  = driverGamepad.getLeftYAxis();
+		}
+		else
+		{
+			speedCommand = 0.;
+		}
+		
+		if(Math.abs(driverGamepad.getRightXAxis()) > 0.1) 
+		{
+			turnCommand = driverGamepad.getRightXAxis();
+		}
+		else
+		{
+			turnCommand = 0.;
+		}
+		
+		
 		
 		mDrive.driveSpeedTurn(speedCommand, turnCommand);
 		
