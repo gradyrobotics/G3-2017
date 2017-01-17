@@ -34,5 +34,14 @@ public class OI
 		turnCommand = driverGamepad.getRightXAxis();
 		
 		mDrive.driveSpeedTurn(speedCommand, turnCommand);
+		
+		if (driverGamepad.getLB())
+		{
+			mDrive.lowGear();
+		}
+		else if (driverGamepad.getRB())
+		{
+			mDrive.highGear();
+		}
 	}
 }

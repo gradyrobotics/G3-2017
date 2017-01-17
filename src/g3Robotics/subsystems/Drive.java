@@ -17,7 +17,8 @@ public class Drive extends G3Subsystem
     // Actuators
     private final VictorSP leftMotor1;
     private final VictorSP rightMotor1;
-   
+    private final Solenoid shifter;
+    
     // Sensors
     private Encoder leftEncoder;
     private Encoder rightEncoder;
@@ -38,6 +39,7 @@ public class Drive extends G3Subsystem
     {
         leftMotor1 = new VictorSP(Constants.leftDrivePWM);
         rightMotor1 = new VictorSP(Constants.rightDrivePWM);
+        shifter = new Solenoid(Constants.shifterSolenoid);
         
         pdp = new PowerDistributionPanel();
         
@@ -47,7 +49,7 @@ public class Drive extends G3Subsystem
         leftEncoder.setDistancePerPulse(encoderScalingFactor);
         rightEncoder = new Encoder(Constants.rightDriveDI1, Constants.rightDriveDI2);
         rightEncoder.setDistancePerPulse(-encoderScalingFactor);
-        
+        lowGear();
         
     }
     
@@ -94,6 +96,16 @@ public class Drive extends G3Subsystem
     public void brake()
     {
         driveLeftRight(0.0, 0.0);
+    }
+    
+    public void lowGear()
+    {
+    	shifter.set(false);
+    }
+    
+    public void highGear()
+    {
+    	shifter.set(true);
     }
     
     public double getLeftDistance()

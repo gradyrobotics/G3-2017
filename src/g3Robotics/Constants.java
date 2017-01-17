@@ -12,7 +12,7 @@ public class Constants {
 
 	
 	//Solenoid Outputs
-	
+	public static final int shifterSolenoid = 0;
 	//Relay Outputs
 	
 	//Digital Inputs
