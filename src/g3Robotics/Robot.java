@@ -29,8 +29,8 @@ public class Robot extends IterativeRobot {
     Drive mDrive;
     OI mOI;
     public void robotInit() {
-    	mDrive.getInstance();
-    	mOI.getInstance();
+    	mDrive = Drive.getInstance();
+    	mOI = OI.getInstance();
     	
     	
     }
