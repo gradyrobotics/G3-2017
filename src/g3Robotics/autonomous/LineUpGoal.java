@@ -51,6 +51,6 @@ public class LineUpGoal extends State
 
 	public boolean isDone()	 
 	{
-		return (Math.abs(offsetX) < 2) && (Math.abs(offsetY) < 2); //4 pixel threashold.
+		return (mVision.isTargetFound()); //4 pixel threashold.
 	}
 }
