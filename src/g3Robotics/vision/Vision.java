@@ -35,7 +35,7 @@ public class Vision {
     
     public void VisionInit()
     {
-    	UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+    	UsbCamera camera =  CameraServer.getInstance().startAutomaticCapture(0);
     	camera.setResolution(Image_Width, Image_Height);
     	
     	visionThread = new VisionThread(camera, new GripPipeline(), pipeline -> {
