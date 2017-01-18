@@ -31,8 +31,9 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	mDrive = Drive.getInstance();
     	mOI = OI.getInstance();
-    	
-    	
+    	mVision.getInstance();
+        mVision.VisionInit();
+        mVision.findTarget();
     }
     
     public void autonomousInit() {
@@ -41,7 +42,6 @@ public class Robot extends IterativeRobot {
 		System.out.println("Auto selected: " + autoSelected);
     }
 
- 
     public void autonomousPeriodic() {
     	switch(autoSelected) {
     	case customAuto:
@@ -60,6 +60,7 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         mOI.processInputs();
         logToDashboard();
+        mVision.findTarget();
     }
     
     /**
@@ -70,6 +71,9 @@ public class Robot extends IterativeRobot {
     }
     
     public void logToDashboard() {
+    	SmartDashboard.putNumber("X Offset from Target", mVision.getXOffset());
+    	SmartDashboard.putNumber("Y Offset from Target", mVision.getYOffset());
+    	SmartDashboard.putBoolean("Target found?", mVision.isTargetFound());
     	SmartDashboard.putNumber("Left Encoder Distance: ", mDrive.getLeftDistance());
     	SmartDashboard.putNumber("Right Encoder Distance: ", mDrive.getRightDistance());
     	SmartDashboard.putNumber("Left Encoder Speed: ", mDrive.getLeftSpeed());

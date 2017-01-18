@@ -51,7 +51,6 @@ public class Vision {
     	
     	visionThread.start();
     	
-    	
     }
     
     public synchronized void findTarget() {
@@ -60,6 +59,15 @@ public class Vision {
     		yOffset = centerY - Image_Height/2;
     	}
     }
+    
+    public boolean isTargetFound(){
+    	if ((Math.abs(xOffset) < 2) && (Math.abs(yOffset) < 2)){
+    		return true;
+    	}
+    	else
+    		return false;
+    }
+    
     public double getCenterX(){
     	return centerX;
     }
