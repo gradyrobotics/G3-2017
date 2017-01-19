@@ -1,4 +1,3 @@
-
 package g3Robotics;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -33,6 +32,7 @@ public class Robot extends IterativeRobot {
     	mVision = Vision.getInstance();
         mVision.VisionInit();
         mVision.findTarget();
+        logToDashboard();
     }
     
     public void autonomousInit() {
