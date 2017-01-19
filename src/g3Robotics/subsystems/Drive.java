@@ -22,8 +22,9 @@ public class Drive extends G3Subsystem
     // Sensors
     private Encoder leftEncoder;
     private Encoder rightEncoder;
-    private Gyro gyro;
+    //private Gyro gyro;
     private PowerDistributionPanel pdp;
+    private ADXRS450_Gyro gyro;
     
     //Variables
     private double leftDistance = 0;
@@ -49,6 +50,8 @@ public class Drive extends G3Subsystem
         leftEncoder.setDistancePerPulse(encoderScalingFactor);
         rightEncoder = new Encoder(Constants.rightDriveDI1, Constants.rightDriveDI2);
         rightEncoder.setDistancePerPulse(-encoderScalingFactor);
+        gyro = new ADXRS450_Gyro();
+        
         lowGear();
         
     }
