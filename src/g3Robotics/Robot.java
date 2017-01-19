@@ -35,6 +35,15 @@ public class Robot extends IterativeRobot {
         logToDashboard();
     }
     
+    /**
+     * Function that is called periodically while robot is disabled. 
+     * Publishing to smart dashboard here will be a live status of the 
+     * robot in disabled mode. 
+     */
+    public void disabledPeriodic() {
+    	logToDashboard();
+    }
+    
     public void autonomousInit() {
     	autoSelected = (String) chooser.getSelected();
 //		autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
