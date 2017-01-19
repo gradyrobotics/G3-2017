@@ -45,19 +45,17 @@ public class Vision {
             	synchronized (imgLock) {
             		centerX = boundingBox.x + (boundingBox.width / 2);
             		centerY = boundingBox.y + (boundingBox.height / 2);
+            		findTarget();
             	}
             }	
     	});
     	
     	visionThread.start();
-    	
     }
     
     public synchronized void findTarget() {
-    	synchronized(imgLock) {
     		xOffset = centerX - Image_Width/2;
     		yOffset = centerY - Image_Height/2;
-    	}
     }
     
     public boolean isTargetFound(){

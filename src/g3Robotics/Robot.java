@@ -32,7 +32,6 @@ public class Robot extends IterativeRobot {
     	mVision = Vision.getInstance();
         mVision.VisionInit();
         mVision.findTarget();
-        logToDashboard();
     }
     
     /**
@@ -81,6 +80,8 @@ public class Robot extends IterativeRobot {
     public void logToDashboard() {
     	SmartDashboard.putNumber("X Offset from Target", mVision.getXOffset());
     	SmartDashboard.putNumber("Y Offset from Target", mVision.getYOffset());
+    	SmartDashboard.putNumber("X Center:", mVision.getCenterX());
+    	SmartDashboard.putNumber("Y Center:", mVision.getCenterY());
     	SmartDashboard.putBoolean("Target found?", mVision.isTargetFound());
     	SmartDashboard.putNumber("Left Encoder Distance: ", mDrive.getLeftDistance());
     	SmartDashboard.putNumber("Right Encoder Distance: ", mDrive.getRightDistance());
