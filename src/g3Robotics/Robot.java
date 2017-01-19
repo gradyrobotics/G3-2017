@@ -1,4 +1,3 @@
-
 package g3Robotics;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -23,7 +22,6 @@ public class Robot extends IterativeRobot {
     final String customAuto = "My Auto";
     String autoSelected;
     SendableChooser chooser;
-    
 	
     Vision mVision;
     Drive mDrive;
@@ -31,9 +29,10 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	mDrive = Drive.getInstance();
     	mOI = OI.getInstance();
-    	mVision.getInstance();
+    	mVision = Vision.getInstance();
         mVision.VisionInit();
         mVision.findTarget();
+        logToDashboard();
     }
     
     public void autonomousInit() {
