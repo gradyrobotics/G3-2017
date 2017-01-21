@@ -9,6 +9,8 @@ public class Constants {
 	//PWM Outputs
 	public static final int leftDrivePWM = 1; 
 	public static final int rightDrivePWM = 0; 
+	public static final int shooterMotorPWM_1 = 2;
+	public static final int shooterMotorPWM_2 = 3;
 
 	
 	//Solenoid Outputs
@@ -20,6 +22,8 @@ public class Constants {
 	public static final int leftDriveDI2 = 1;
 	public static final int rightDriveDI1 = 2;
 	public static final int rightDriveDI2 = 3;
+	
+	public static final int bannerSensorPWM = 4;
 	
 	//Analog Inputs
 	
