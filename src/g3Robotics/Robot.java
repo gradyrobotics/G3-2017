@@ -30,8 +30,8 @@ public class Robot extends IterativeRobot {
     	mDrive = Drive.getInstance();
     	mOI = OI.getInstance();
     	mVision = Vision.getInstance();
-        mVision.VisionInit();
-        mVision.findTarget();
+        //mVision.VisionInit();
+        //mVision.findTarget();
     }
     
     /**
@@ -67,7 +67,7 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         mOI.processInputs();
         logToDashboard();
-        mVision.findTarget();
+        //mVision.findTarget();
     }
     
     /**

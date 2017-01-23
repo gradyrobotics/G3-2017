@@ -32,7 +32,7 @@ public class OI
 	{
 		if(Math.abs(driverGamepad.getLeftYAxis()) > 0.1)
 		{
-			speedCommand  = driverGamepad.getLeftYAxis();
+			speedCommand  = 0;//driverGamepad.getLeftYAxis();
 		}
 		else
 		{
@@ -41,7 +41,7 @@ public class OI
 		
 		if(Math.abs(driverGamepad.getRightXAxis()) > 0.1) 
 		{
-			turnCommand = driverGamepad.getRightXAxis();
+			turnCommand = 0;//driverGamepad.getRightXAxis();
 		}
 		else
 		{

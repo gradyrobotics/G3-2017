@@ -24,7 +24,7 @@ public class Drive extends G3Subsystem
     private Encoder rightEncoder;
     //private Gyro gyro;
     private PowerDistributionPanel pdp;
-    private ADXRS450_Gyro gyro;
+    //private ADXRS450_Gyro gyro;
     
     //Variables
     private double leftDistance = 0;
@@ -50,7 +50,7 @@ public class Drive extends G3Subsystem
         leftEncoder.setDistancePerPulse(encoderScalingFactor);
         rightEncoder = new Encoder(Constants.rightDriveDI1, Constants.rightDriveDI2);
         rightEncoder.setDistancePerPulse(-encoderScalingFactor);
-        gyro = new ADXRS450_Gyro();
+        //gyro = new ADXRS450_Gyro();
         
         lowGear();
         
@@ -157,7 +157,7 @@ public class Drive extends G3Subsystem
     
     public double getGyroAngle()
     {
-        return gyro.getAngle();
+        return 0;//gyro.getAngle();
     }
     
      public void driveArc(double speed, double arc)
@@ -210,7 +210,7 @@ public class Drive extends G3Subsystem
     public synchronized void reset()
     {
         this.driveSpeedTurn(0.0,0.0);
-        gyro.reset();
+        //gyro.reset();
         resetEncoders();
     }
 }
