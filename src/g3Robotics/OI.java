@@ -7,7 +7,7 @@ public class OI
 {
 	private static OI instance = null;
 	private final Drive mDrive;
-	private XboxController driverGamepad;
+	public XboxController driverGamepad;
 	private double speedCommand, turnCommand;
 	
 	public static OI getInstance()
@@ -30,24 +30,8 @@ public class OI
 
 	public void processInputs()
 	{
-		if(Math.abs(driverGamepad.getLeftYAxis()) > 0.1)
-		{
-			speedCommand  = driverGamepad.getLeftYAxis();
-		}
-		else
-		{
-			speedCommand = 0.;
-		}
-		
-		if(Math.abs(driverGamepad.getRightXAxis()) > 0.1) 
-		{
-			turnCommand = driverGamepad.getRightXAxis();
-		}
-		else
-		{
-			turnCommand = 0.;
-		}
-		
+		speedCommand = G3Math.applyDeadband(driverGamepad.getLeftYAxis(), 0.2);
+		turnCommand = G3Math.applyDeadband(driverGamepad.getRightXAxis(), 0.2);
 		
 		
 		mDrive.driveSpeedTurn(speedCommand, turnCommand);

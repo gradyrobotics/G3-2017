@@ -32,11 +32,13 @@ public class Vision {
         }
         return instance;
     }
-    
+    	
     public void VisionInit()
     {
     	UsbCamera camera =  CameraServer.getInstance().startAutomaticCapture(0);
     	camera.setResolution(Image_Width, Image_Height);
+    	//camera.setExposureManual(30);
+    	//camera.setExposureHoldCurrent();
     	
     	visionThread = new VisionThread(camera, new GripPipeline(), pipeline -> {
     		
@@ -49,7 +51,7 @@ public class Vision {
             	}
             }	
     	});
-    	
+    		
     	visionThread.start();
     }
     
@@ -65,7 +67,7 @@ public class Vision {
     	else
     		return false;
     }
-    
+    	
     public double getCenterX(){
     	return centerX;
     }
