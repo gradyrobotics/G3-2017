@@ -24,7 +24,9 @@ public class Drive extends G3Subsystem
     private Encoder rightEncoder;
     //private Gyro gyro;
     private PowerDistributionPanel pdp;
-    private ADXRS450_Gyro gyro;
+    //private ADXRS450_Gyro gyro;
+    //private Gyro gyro;
+    private Counter counter;
     
     //Variables
     private double leftDistance = 0;
@@ -44,13 +46,14 @@ public class Drive extends G3Subsystem
         
         pdp = new PowerDistributionPanel();
         
-
+        counter = new Counter(Constants.bannerSensorPWM);
+        
         double encoderScalingFactor = (Constants.WheelSizeIn*Math.PI)/128; //CHECK THIS
         leftEncoder = new Encoder(Constants.leftDriveDI1, Constants.leftDriveDI2);
         leftEncoder.setDistancePerPulse(encoderScalingFactor);
         rightEncoder = new Encoder(Constants.rightDriveDI1, Constants.rightDriveDI2);
         rightEncoder.setDistancePerPulse(-encoderScalingFactor);
-        gyro = new ADXRS450_Gyro();
+        //gyro = null;//new ADXRS450_Gyro();
         
         lowGear();
         
@@ -111,14 +114,15 @@ public class Drive extends G3Subsystem
     	shifter.set(true);
     }
     
+    
     public double getLeftDistance()
     {
-        return -leftEncoder.getDistance();
+        return leftEncoder.getDistance();
     }
     
     public double getRightDistance()
     {
-        return -rightEncoder.getDistance();
+        return rightEncoder.getDistance();
     }
     
     public synchronized double getAverageDistance()
@@ -155,9 +159,10 @@ public class Drive extends G3Subsystem
         return (getLeftSpeed()+getRightSpeed())/2.0;
     }
     
+    
     public double getGyroAngle()
     {
-        return gyro.getAngle();
+        return 0.0;//gyro.getAngle();
     }
     
      public void driveArc(double speed, double arc)
@@ -207,10 +212,14 @@ public class Drive extends G3Subsystem
     {
     }
 
+    public double getSpeed(){
+    	return 60.0/counter.getPeriod();
+    }
+    
     public synchronized void reset()
     {
         this.driveSpeedTurn(0.0,0.0);
-        gyro.reset();
+        //gyro.reset();
         resetEncoders();
     }
 }
