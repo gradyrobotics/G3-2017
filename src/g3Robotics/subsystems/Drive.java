@@ -18,13 +18,14 @@ public class Drive extends G3Subsystem
     private final VictorSP leftMotor1;
     private final VictorSP rightMotor1;
     private final Solenoid shifter;
+    private final Relay lights;
     
     // Sensors
     private Encoder leftEncoder;
     private Encoder rightEncoder;
     //private Gyro gyro;
     private PowerDistributionPanel pdp;
-    //private ADXRS450_Gyro gyro;
+    private ADXRS450_Gyro gyro;
     //private Gyro gyro;
     private Counter counter;
     
@@ -35,6 +36,7 @@ public class Drive extends G3Subsystem
     private double lastRightDistance = 0;
     private double leftRaw = 0;
     private double rightRaw =0;
+    private boolean areLightsOn = false;
 
     private static Drive instance = null;
 
@@ -43,6 +45,7 @@ public class Drive extends G3Subsystem
         leftMotor1 = new VictorSP(Constants.leftDrivePWM);
         rightMotor1 = new VictorSP(Constants.rightDrivePWM);
         shifter = new Solenoid(Constants.shifterSolenoid);
+        lights = new Relay(Constants.lightRelay);
         
         pdp = new PowerDistributionPanel();
         
@@ -53,7 +56,7 @@ public class Drive extends G3Subsystem
         leftEncoder.setDistancePerPulse(encoderScalingFactor);
         rightEncoder = new Encoder(Constants.rightDriveDI1, Constants.rightDriveDI2);
         rightEncoder.setDistancePerPulse(-encoderScalingFactor);
-        //gyro = null;//new ADXRS450_Gyro();
+        gyro = new ADXRS450_Gyro();
         
         lowGear();
         
@@ -162,7 +165,7 @@ public class Drive extends G3Subsystem
     
     public double getGyroAngle()
     {
-        return 0.0;//gyro.getAngle();
+        return gyro.getAngle();
     }
     
      public void driveArc(double speed, double arc)
@@ -219,7 +222,24 @@ public class Drive extends G3Subsystem
     public synchronized void reset()
     {
         this.driveSpeedTurn(0.0,0.0);
-        //gyro.reset();
+        gyro.reset();
         resetEncoders();
+    }
+    
+    public void lightsOn()
+    { 
+    	lights.set(Relay.Value.kForward);
+    	areLightsOn = true;
+    }
+    
+    public void lightsOff()
+    {
+    	lights.set(Relay.Value.kReverse);
+    	areLightsOn = false; 
+    }
+    
+    public boolean getLightState()
+    {
+    	return areLightsOn;
     }
 }
