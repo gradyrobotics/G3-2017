@@ -11,15 +11,15 @@ public class Intake extends G3Subsystem{
 	private static Intake instance;
 	private boolean isUp = true;
 	
-	public Intake getInstance()
+	public static Intake getInstance()
 	{
-		if (this.instance == null)
+		if (instance == null)
 		{
 			return new Intake();
 		}
 		else
 		{
-			return this.instance;
+			return instance;
 		}
 	}
 	
