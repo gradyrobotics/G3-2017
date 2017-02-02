@@ -11,12 +11,17 @@ public class Constants {
 	public static final int rightDrivePWM = 0; 
 	public static final int shooterMotorPWM_1 = 2;
 	public static final int shooterMotorPWM_2 = 3;
+	public static final int intakeMotorPWM = 4;
+	public static final int climberMotorPWM = 5;
 
 	
 	//Solenoid Outputs
 	public static final int shifterSolenoid = 0;
+	public static final int intakeSolenoid = 1;
+	
 	
 	//Relay Outputs
+	public static final int lightRelay = 0;
 	
 	//Digital Inputs
 	public static final int leftDriveDI1 = 0;
