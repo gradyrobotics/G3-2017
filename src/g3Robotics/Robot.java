@@ -29,9 +29,9 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	mDrive = Drive.getInstance();
     	mOI = OI.getInstance();
-    	//mVision = Vision.getInstance();
-        //mVision.VisionInit();
-        //mVision.findTarget();
+    	mVision = Vision.getInstance();
+        mVision.VisionInit();
+        mVision.findTarget();
     }
     
     /**
@@ -41,7 +41,7 @@ public class Robot extends IterativeRobot {
      */
     public void disabledPeriodic() {
     	logToDashboard();
-    	//mVision.findTarget();
+    	mVision.findTarget();
     }
     
     public void autonomousInit() {
@@ -68,7 +68,7 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         mOI.processInputs();
         logToDashboard();
-        //mVision.findTarget();
+        mVision.findTarget();
     }
     
     /**
@@ -79,11 +79,11 @@ public class Robot extends IterativeRobot {
     }
     
     public void logToDashboard() {
-//    	//SmartDashboard.putNumber("X Offset from Target", mVision.getXOffset());
-//    	//SmartDashboard.putNumber("Y Offset from Target", mVision.getYOffset());
-//    	SmartDashboard.putNumber("X Center:", mVision.getCenterX());
-//    	SmartDashboard.putNumber("Y Center:", mVision.getCenterY());
-//    	SmartDashboard.putBoolean("Target found?", mVision.isTargetFound());
+    	SmartDashboard.putNumber("X Offset from Target", mVision.getXOffset());
+    	SmartDashboard.putNumber("Y Offset from Target", mVision.getYOffset());
+    	SmartDashboard.putNumber("X Center:", mVision.getCenterX());
+    	SmartDashboard.putNumber("Y Center:", mVision.getCenterY());
+    	SmartDashboard.putBoolean("Target found?", mVision.isTargetFound());
     	SmartDashboard.putNumber("Left Encoder Distance: ", mDrive.getLeftDistance());
     	SmartDashboard.putNumber("Right Encoder Distance: ", mDrive.getRightDistance());
     	SmartDashboard.putNumber("Left Encoder Speed: ", mDrive.getLeftSpeed());

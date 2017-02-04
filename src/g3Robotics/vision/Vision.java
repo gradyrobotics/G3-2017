@@ -1,5 +1,6 @@
 package g3Robotics.vision;
 
+import edu.wpi.cscore.AxisCamera;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.vision.VisionRunner;
@@ -35,11 +36,9 @@ public class Vision {
     	
     public void VisionInit()
     {
-    	UsbCamera camera =  CameraServer.getInstance().startAutomaticCapture(0);
+		AxisCamera camera = CameraServer.getInstance().addAxisCamera("Axis Camera","10.16.48.30");
     	camera.setResolution(Image_Width, Image_Height);
-    	//camera.setExposureManual(30);
-    	//camera.setExposureHoldCurrent();
-    	
+
     	visionThread = new VisionThread(camera, new GripPipeline(), pipeline -> {
     		
             if (!pipeline.filterContoursOutput().isEmpty()) {
