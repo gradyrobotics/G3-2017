@@ -27,7 +27,6 @@ public class OI
 		mDrive = Drive.getInstance();
 		//Initialize gamepads
 		driverGamepad = new XboxController(0);
-		
 	}
 
 	public void processInputs()

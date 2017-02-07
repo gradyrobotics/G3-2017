@@ -20,6 +20,9 @@ public class Vision {
     private double xOffset = 0.0;
     private double yOffset = 0.0;
     
+    private double fieldOfView = 43.5;
+    private double focalLength = 401.03;
+    
     private VisionThread visionThread;
     
 	private static Vision instance = null;
@@ -57,6 +60,10 @@ public class Vision {
     public synchronized void findTarget() {
     		xOffset = centerX - Image_Width/2;
     		yOffset = centerY - Image_Height/2;
+    }
+    
+    public double getYawAngleTarget(){
+    	return (Math.atan((centerX - (Image_Width / 2))/focalLength));
     }
     
     public boolean isTargetFound(){
