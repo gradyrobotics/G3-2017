@@ -41,7 +41,7 @@ public class LineUpGoal extends State
 	public void running() 
 	{
 		mDrive.setOpenLoop();
-		//mDrive.driveSpeedTurn(0, 0.7);
+		mDrive.driveSpeedTurn(0, 0.7);
 		mVision.findTarget(); // update offset values. 
 		offsetX = mVision.getXOffset();
 		offsetY = mVision.getYOffset();
@@ -51,6 +51,6 @@ public class LineUpGoal extends State
 
 	public boolean isDone()	 
 	{
-		return (mVision.isTargetFound()); //4 pixel threashold.
+		return (mVision.getYawAngleTarget() == mDrive.getGyroAngle());
 	}
 }
