@@ -28,12 +28,12 @@ public class Constants {
 	public static final int lightRelay = 0;
 	
 	//Digital Inputs
-	public static final int leftDriveDI1 = 0;
-	public static final int leftDriveDI2 = 1;
-	public static final int rightDriveDI1 = 2;
-	public static final int rightDriveDI2 = 3;
+	public static final int leftDriveDI1 = 11;
+	public static final int leftDriveDI2 = 12;
+	public static final int rightDriveDI1 = 13;
+	public static final int rightDriveDI2 = 14;
 	
-	public static final int bannerSensorPWM = 4;
+	public static final int bannerSensorPWM = 5;
 	
 	//Analog Inputs
 	

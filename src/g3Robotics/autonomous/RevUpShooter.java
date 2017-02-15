@@ -16,11 +16,11 @@ public class RevUpShooter extends State{
 	}
 	
 	public void exit(){
-		mShooter.setWheels(0.0, 0.0, 0.0);
+		
 	}
 
 	public void running() {
-		mShooter.setWheels(1300, 0.5, 0.7);
+		mShooter.setWheels(0.5);
 	}
 	
 

@@ -109,15 +109,23 @@ public class OI
 			mShooter.setSmallAngle();
 		}
 		
-		//Run the shooter wheels to speed
 		if (operatorGamepad.getLeftTrigger())
 		{
-			//The values for the constant wheel speed shot need to be tuned
-			mShooter.setWheels(1300, 0.5, 0.7);
+			mShooter.setWheels(0.5);
 		}
-		else {
-			mShooter.setWheels(0, 0, 0);
+		else
+		{
+			mShooter.setWheels(0.0);
 		}
+		//Run the shooter wheels to speed
+//		if (operatorGamepad.getLeftTrigger())
+//		{
+//			//The values for the constant wheel speed shot need to be tuned
+//			mShooter.setWheels(1300, 0.5, 0.7);
+//		}
+//		else {
+//			mShooter.setWheels(0, 0, 0);
+//		}
 		
 		//Fire the fuel
 		if(operatorGamepad.getRightTrigger())

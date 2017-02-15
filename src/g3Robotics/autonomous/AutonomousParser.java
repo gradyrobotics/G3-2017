@@ -58,6 +58,16 @@ public class AutonomousParser
                     	int lParam1 = mProperties.getIntValue("AutonomousFirstParam" + Integer.toString(i+1), 0);
                     	lStates[i] = new MixedTurn(lParam1);
                     }
+                    else if (lStateName.equals("RevUpShooter"))
+                    {
+                    	double lParam1 = mProperties.getDoubleValue("AutonomousFirstParam" + Integer.toString(i+1), 0);
+                    	lStates[i] = new RevUpShooter(lParam1);
+                    }
+//                    else if (lStateName.equals("ShootFuel"))
+//                    {
+//                    	double lParam1 = mProperties.getDoubleValue("AutonomousFirstParam" + Integer.toString(i+1), 0);
+//                    	lStates[i] = new ShootFuel(lParam);
+//                    }
                     //TODO: Add additional States as they are developed
                     /*
                     // Example:
