@@ -20,8 +20,14 @@ public class Vision {
     private double xOffset = 0.0;
     private double yOffset = 0.0;
     
-    private double fieldOfView = 43.5;
+    private final double horizontalFieldOfView = 43.5;
+    private final double verticleFieldOfView = 40.0;
     private double focalLength = 401.03;
+    private double viewingAngle; //arccos(apparent height in pixels / actual height in pixels)
+    						     //actual height in pixels = apparentWidth * (physical height/physical width), only works
+    							 //if there is little distortion
+    
+    private double distanceFromGoal; 
     
     private VisionThread visionThread;
     
@@ -54,12 +60,16 @@ public class Vision {
             }	
     	});
     		
-    	visionThread.start();
+    	visionThread.start();	
     }
     
     public synchronized void findTarget() {
     		xOffset = centerX - Image_Width/2;
     		yOffset = centerY - Image_Height/2;
+    }
+    
+    public double getDistanceFromTarget(){
+    	return distanceFromGoal;
     }
     
     public double getYawAngleTarget(){

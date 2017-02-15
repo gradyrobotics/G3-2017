@@ -2,23 +2,27 @@ package g3Robotics;
 
 /**
  *
- * @author Pratik
+ * @author Pratik and Alex!
  */
 public class Constants {
 
 	//PWM Outputs
-	public static final int leftDrivePWM = 1; 
-	public static final int rightDrivePWM = 0; 
-	public static final int shooterMotorPWM_1 = 2;
-	public static final int shooterMotorPWM_2 = 3;
-	public static final int intakeMotorPWM = 4;
-	public static final int climberMotorPWM = 5;
-
+	public static final int leftDrivePWM = 0; 
+	public static final int rightDrivePWM = 1; 
+	public static final int intakeMotorPWM = 7;
+	public static final int climberMotorPWM = 2;
 	
+	public static final int shooterMotorsPWM = 3;
+	public static final int shooterTransportPWM = 4;
+	public static final int cycloneMotorPWM = 5;
+	public static final int ballPathMotorPWM = 6;
+
 	//Solenoid Outputs
 	public static final int shifterSolenoid = 0;
-	public static final int intakeSolenoid = 1;
-	
+	public static final int intakeSolenoid_1 = 3;
+	public static final int intakeSolenoid_2 = 4;
+	public static final int shooterHoodSolenoid_1 = 1;
+	public static final int shooterHoodSolenoid_2 = 2;
 	
 	//Relay Outputs
 	public static final int lightRelay = 0;
