@@ -7,7 +7,7 @@ public class Climber extends G3Subsystem {
 	public VictorSP climberMotor;
 	private static Climber instance;
 	
-	public Climber getInstance()
+	public static Climber getInstance()
 	{
 		if (instance == null)
 		{

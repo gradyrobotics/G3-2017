@@ -17,6 +17,7 @@ import g3Robotics.utilities.XboxController;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
+
 public class Robot extends IterativeRobot {
     final String defaultAuto = "Default";
     final String customAuto = "My Auto";
@@ -26,12 +27,27 @@ public class Robot extends IterativeRobot {
     Vision mVision;
     Drive mDrive;
     OI mOI;
+    
+    PropertyReader mPropertyReader;
+    PropertySet mProperties;
+    
+    String autonomousName = "";
+    
+    StateMachine mAutonomousStateMachine;
+    boolean mLastIterationButtonState = false;
+    int buttonCounter;
+    
     public void robotInit() {
+    	
     	mDrive = Drive.getInstance();
     	mOI = OI.getInstance();
     	mVision = Vision.getInstance();
         mVision.VisionInit();
         mVision.findTarget();
+        
+        mPropertyReader = new PropertyReader();
+        mProperties = PropertySet.getInstance();
+        
     }
     
     /**
@@ -42,23 +58,59 @@ public class Robot extends IterativeRobot {
     public void disabledPeriodic() {
     	logToDashboard();
     	mVision.findTarget();
+    	
+		if(mOI.driverGamepad.getAButton() && !mLastIterationButtonState)
+    	{
+    		buttonCounter++;
+    		readAutoMode(buttonCounter);
+    		
+	    	if(buttonCounter > 3)
+	    	{
+	    		buttonCounter = 0;
+	    	}
+
+    	mAutonomousStateMachine = new StateMachine(new AutonomousParser().parseStates());
+    	}
+		
+		if(mOI.driverGamepad.getBButton())
+		{
+	   		 mDrive.reset();
+	   		 mPropertyReader.parseFile("/home/lvuser/properties.txt");
+	   		 //loadAllProperties();
+	   	}
+   	 	mLastIterationButtonState = mOI.driverGamepad.getAButton();
     }
     
     public void autonomousInit() {
-    	autoSelected = (String) chooser.getSelected();
-//		autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
-		System.out.println("Auto selected: " + autoSelected);
+    	
     }
 
+    /** 
+     *This function is called periodically during autonomous  
+     */
+    
     public void autonomousPeriodic() {
-    	switch(autoSelected) {
-    	case customAuto:
-        //Put custom auto code here   
-            break;
-    	case defaultAuto:
-    	default:
-    	//Put default auto code here
-            break;
+    	mAutonomousStateMachine.run();
+    	logToDashboard();
+    }
+    
+    private void readAutoMode(int lWhich)
+    {
+    	switch(lWhich)
+    	{
+    		//Add autonomous modes as they are made
+	    	case 1:
+	    		mPropertyReader.parseAutonomousFile("/home/lvuser/DriveForward.txt");
+	    		autonomousName = "Drive Forward";
+	    		break;
+	    	case 2:
+	    		mPropertyReader.parseAutonomousFile("/home/lvuser/AimAtGoal.txt");
+	    		autonomousName = "Aim At Goal Test";
+	    		break;
+    		default:
+    			mPropertyReader.parseAutonomousFile("/home/lvuser/DoNothing.txt");
+    			autonomousName = "Do Nothing";
+    			break;
     	}
     }
 
@@ -78,6 +130,10 @@ public class Robot extends IterativeRobot {
     
     }
     
+    public void loadAllProperties() {
+    	
+    }
+    
     public void logToDashboard() {
     	SmartDashboard.putNumber("X Offset from Target", mVision.getXOffset());
     	SmartDashboard.putNumber("Y Offset from Target", mVision.getYOffset());
@@ -89,6 +145,7 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Left Encoder Speed: ", mDrive.getLeftSpeed());
     	SmartDashboard.putNumber("Right Encoder Speed: ", mDrive.getRightSpeed());
     	SmartDashboard.putNumber("Gyro: ", mDrive.getGyroAngle());
+    	SmartDashboard.putString("Auto mode: ", autonomousName);
     }
     
 }

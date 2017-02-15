@@ -5,7 +5,8 @@ import edu.wpi.first.wpilibj.VictorSP;
 import g3Robotics.Constants;
 
 //author is peeps
-public class Intake extends G3Subsystem{
+public class Intake extends G3Subsystem {
+	
 	private VictorSP intakeMotor;
 	private Solenoid intakePiston;
 	private static Intake instance;
@@ -26,8 +27,7 @@ public class Intake extends G3Subsystem{
 	public Intake()
 	{
 		intakeMotor = new VictorSP(Constants.intakeMotorPWM);
-		intakePiston = new Solenoid(Constants.intakeSolenoid);
-		
+		intakePiston = new Solenoid(Constants.intakeSolenoid_1, Constants.intakeSolenoid_2);	
 	}
 	
 	public void setSpeed(double inputSpeed)
@@ -37,7 +37,7 @@ public class Intake extends G3Subsystem{
 	
 	public void deploy()
 	{
-		intakePiston.set(true);
+		intakePiston.set(true);	
 		isUp = false;
 	}
 	
