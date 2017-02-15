@@ -27,7 +27,7 @@ public class Drive extends G3Subsystem
     private PowerDistributionPanel pdp;
     private ADXRS450_Gyro gyro;
     //private Gyro gyro;
-    private Counter counter;
+    
     
     //Variables
     private double leftDistance = 0;
@@ -49,7 +49,7 @@ public class Drive extends G3Subsystem
         
         pdp = new PowerDistributionPanel();
         
-        counter = new Counter(Constants.bannerSensorPWM);
+        
         
         double encoderScalingFactor = (Constants.WheelSizeIn*Math.PI)/128; //CHECK THIS
         leftEncoder = new Encoder(Constants.leftDriveDI1, Constants.leftDriveDI2);
@@ -215,10 +215,7 @@ public class Drive extends G3Subsystem
     {
     }
 
-    public double getSpeed(){
-    	return 60.0/counter.getPeriod();
-    }
-    
+   
     public synchronized void reset()
     {
         this.driveSpeedTurn(0.0,0.0);
