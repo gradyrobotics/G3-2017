@@ -1,4 +1,4 @@
-package g3Robotics.autonomous;
+	package g3Robotics.autonomous;
 
 import g3Robotics.fileio.*;
 
@@ -50,11 +50,24 @@ public class AutonomousParser
                         lStates[i] = new MixedDrive(lParam1);
                     }
                     else if (lStateName.equals("LineUpGoal"))
-                    {
-                    	//double lParam1 = mProperties.getDoubleValue("AutonomousFirstParam" + Integer.toString(i+1), 0);
-                    	
+                    {                    	
                     	lStates[i] = new LineUpGoal();
                     }
+                    else if (lStateName.equals("MixedTurn"))
+                    {
+                    	int lParam1 = mProperties.getIntValue("AutonomousFirstParam" + Integer.toString(i+1), 0);
+                    	lStates[i] = new MixedTurn(lParam1);
+                    }
+                    else if (lStateName.equals("RevUpShooter"))
+                    {
+                    	double lParam1 = mProperties.getDoubleValue("AutonomousFirstParam" + Integer.toString(i+1), 0);
+                    	lStates[i] = new RevUpShooter(lParam1);
+                    }
+//                    else if (lStateName.equals("ShootFuel"))
+//                    {
+//                    	double lParam1 = mProperties.getDoubleValue("AutonomousFirstParam" + Integer.toString(i+1), 0);
+//                    	lStates[i] = new ShootFuel(lParam);
+//                    }
                     //TODO: Add additional States as they are developed
                     /*
                     // Example:
@@ -66,7 +79,7 @@ public class AutonomousParser
                         lStates[i] = new MyNewState(lParam1, lParam2);
                     }
                     */
-                    
+ 
                     System.out.println(lStates[i].toString());
                 }
             }

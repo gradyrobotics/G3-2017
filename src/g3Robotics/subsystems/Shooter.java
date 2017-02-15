@@ -10,17 +10,18 @@ public class Shooter extends G3Subsystem {
 	private final VictorSP ballPath;
 	private final Solenoid shooterHood;
 	
-	private Counter counter;
+	//private Counter counter;
 	
 	private static Shooter instance = null;
 	
 	private Shooter()
 	{
+		//counter = new Counter(Constants.bannerSensorPWM);
+
 		shooterMotors = new VictorSP(Constants.shooterMotorsPWM);
 		shooterTransport = new VictorSP(Constants.shooterTransportPWM);
 		cyclone = new VictorSP(Constants.cycloneMotorPWM);
 		ballPath = new VictorSP(Constants.ballPathMotorPWM);
-		counter = new Counter(Constants.bannerSensorPWM);
 		shooterHood = new Solenoid(Constants.shooterHoodSolenoid_1, Constants.shooterHoodSolenoid_2);
 	}
 	
@@ -32,12 +33,16 @@ public class Shooter extends G3Subsystem {
         return instance;
 	}
 	
-	public void setWheels(double wheelSpeed, double lowMotorPower, double highMotorPower){
-		if (getSpeed() < wheelSpeed)
-			shooterMotors.set(highMotorPower);
-		else
-			shooterMotors.set(lowMotorPower);
+	public void setWheels(double speed){
+		shooterMotors.set(speed);
 	}
+	
+//	public void setWheels(double wheelSpeed, double lowMotorPower, double highMotorPower){
+//		if (getSpeed() < wheelSpeed)
+//			shooterMotors.set(highMotorPower);
+//		else
+//			shooterMotors.set(lowMotorPower);
+//	}
 	
 	public void setTransport(double speed){
 		shooterTransport.set(speed);
@@ -58,9 +63,9 @@ public class Shooter extends G3Subsystem {
 	public void setSmallAngle(){
 		shooterHood.set(false);
 	}
-
-    public double getSpeed(){
-    	return 60.0/counter.getPeriod(); 
-    }
+//
+//    public double getSpeed(){
+//    	return 60.0/counter.getPeriod(); 
+//    }
     
 }
