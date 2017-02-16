@@ -109,30 +109,22 @@ public class OI
 			mShooter.setSmallAngle();
 		}
 		
+		//Run the shooter wheels to speed
 		if (operatorGamepad.getLeftTrigger())
 		{
-			mShooter.setWheels(0.5);
+			//The values for the constant wheel speed shot need to be tuned
+			mShooter.setWheels(3000, -0.5, -0.7);
 		}
-		else
-		{
-			mShooter.setWheels(0.0);
+		else {
+			mShooter.setWheels(0, 0, 0);
 		}
-		//Run the shooter wheels to speed
-//		if (operatorGamepad.getLeftTrigger())
-//		{
-//			//The values for the constant wheel speed shot need to be tuned
-//			mShooter.setWheels(1300, 0.5, 0.7);
-//		}
-//		else {
-//			mShooter.setWheels(0, 0, 0);
-//		}
 		
 		//Fire the fuel
 		if(operatorGamepad.getRightTrigger())
 		{
 			//These values need to be tuned
-			mShooter.setBallPath(0.5);
-			mShooter.setCyclone(-0.5);
+			mShooter.setBallPath(1.0);
+			mShooter.setCyclone(1.0);
 			mShooter.setTransport(-0.5);
 		}
 		else {
@@ -144,8 +136,8 @@ public class OI
 		//Preload balls
 		if(operatorGamepad.getBButton())
 		{
-			mShooter.setBallPath(0.4);
-			mShooter.setCyclone(0.4);
+			mShooter.setBallPath(1.0);
+			mShooter.setCyclone(0.8);
 		}
 		else
 		{
@@ -165,6 +157,7 @@ public class OI
 				mIntake.setSpeed(0.0);
 			}
 		}
+		
 		//Run climber; hold down to run
 		if(operatorGamepad.getXButton())
 		{
