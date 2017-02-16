@@ -13,8 +13,8 @@ public class Constants {
 	public static final int climberMotorPWM = 2;
 	
 	public static final int shooterMotorsPWM = 3;
-	public static final int shooterTransportPWM = 4;
-	public static final int cycloneMotorPWM = 5;
+	public static final int shooterTransportPWM = 5;
+	public static final int cycloneMotorPWM = 4;
 	public static final int ballPathMotorPWM = 6;
 
 	//Solenoid Outputs
@@ -28,10 +28,10 @@ public class Constants {
 	public static final int lightRelay = 0;
 	
 	//Digital Inputs
-	public static final int leftDriveDI1 = 11;
-	public static final int leftDriveDI2 = 12;
-	public static final int rightDriveDI1 = 13;
-	public static final int rightDriveDI2 = 14;
+	public static final int leftDriveDI1 = 10;
+	public static final int leftDriveDI2 = 11;
+	public static final int rightDriveDI1 = 12;
+	public static final int rightDriveDI2 = 13;
 	
 	public static final int bannerSensorPWM = 5;
 	

@@ -3,15 +3,15 @@ package g3Robotics.autonomous;
 import edu.wpi.first.wpilibj.Timer;
 import g3Robotics.subsystems.*;
 
-public class RevUpShooter extends State{
+public class ShootFuel extends State{
 	
 	private double mTimeout;
 	private Timer timer;
-	
-	public RevUpShooter(double aSeconds) {
-		super("RevUpShooter");
-		mTimeout = aSeconds *  1000;
+	public ShootFuel(double aSeconds) {
 		
+		super("ShootFuel");
+		
+		mTimeout = aSeconds *  1000;
 		timer = new Timer();
 	}
 	
@@ -19,14 +19,18 @@ public class RevUpShooter extends State{
 		timer.reset();
 		timer.start();
 	}
-	
+
 	public void exit(){
 		timer.stop();
-		mShooter.setWheels(0.0, 0.0, 0.0);
+		mShooter.setTransport(0.0);
+		mShooter.setBallPath(0.0);
+		mShooter.setCyclone(0.0);
 	}
 
 	public void running() {
-		mShooter.setWheels(3000, 0.5, 0.7);
+		mShooter.setTransport(-0.9);
+		mShooter.setBallPath(1.0);
+		mShooter.setCyclone(1.0);
 	}
 	
 
