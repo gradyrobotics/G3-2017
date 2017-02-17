@@ -113,36 +113,30 @@ public class OI
 		if (operatorGamepad.getLeftTrigger())
 		{
 			//The values for the constant wheel speed shot need to be tuned
-			mShooter.setWheels(3000, -0.5, -0.7);
+			mShooter.setWheels(5000, -0.5, -0.7);
 		}
 		else {
 			mShooter.setWheels(0, 0, 0);
 		}
 		
 		//Fire the fuel
-		if(operatorGamepad.getRightTrigger())
+		if(operatorGamepad.getRightTrigger() && !operatorGamepad.getBButton())
 		{
 			//These values need to be tuned
 			mShooter.setBallPath(1.0);
-			mShooter.setCyclone(1.0);
-			mShooter.setTransport(-0.5);
+			mShooter.setCyclone(8.0);
+			mShooter.setTransport(0.5);
 		}
-		else {
-			mShooter.setBallPath(0.0);
-			mShooter.setCyclone(0.0);
-			mShooter.setTransport(0.0);
-		}
-
-		//Preload balls
-		if(operatorGamepad.getBButton())
-		{
+		else if (!operatorGamepad.getRightTrigger() && operatorGamepad.getBButton()) {
 			mShooter.setBallPath(1.0);
-			mShooter.setCyclone(0.8);
+			mShooter.setCyclone(8.0);
+			mShooter.setTransport(0.0);
 		}
 		else
 		{
 			mShooter.setBallPath(0.0);
 			mShooter.setCyclone(0.0);
+			mShooter.setTransport(0.0);
 		}
 		
 		//Raise and lower intake

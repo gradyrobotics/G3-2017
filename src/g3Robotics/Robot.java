@@ -59,6 +59,18 @@ public class Robot extends IterativeRobot {
     	logToDashboard();
     	mVision.findTarget();
     	
+    	/**
+    	 * if driver presses this button{
+    	 * 		buttonCounter++;
+    	 * 		readStartingPosition(buttonCounter);
+    	 * autonomousStartMachine = new StartMachine;
+    	 * 
+    	 * if driver presses this other button {
+    	 * 		buttonCounter++;
+    	 * 		
+    	 * }
+    	 */
+    	
 		if(mOI.driverGamepad.getAButton() && !mLastIterationButtonState)
     	{
     		buttonCounter++;
