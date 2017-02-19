@@ -25,6 +25,7 @@ public class Robot extends IterativeRobot {
     SendableChooser chooser;
 	
     Vision mVision;
+    Shooter mShooter;
     Drive mDrive;
     OI mOI;
     
@@ -41,6 +42,8 @@ public class Robot extends IterativeRobot {
     	
     	mDrive = Drive.getInstance();
     	mOI = OI.getInstance();
+    	mShooter = Shooter.getInstance();
+    	
     	mVision = Vision.getInstance();
         mVision.VisionInit();
         mVision.findTarget();
@@ -59,19 +62,7 @@ public class Robot extends IterativeRobot {
     	logToDashboard();
     	mVision.findTarget();
     	
-    	/**
-    	 * if driver presses this button{
-    	 * 		buttonCounter++;
-    	 * 		readStartingPosition(buttonCounter);
-    	 * autonomousStartMachine = new StartMachine;
-    	 * 
-    	 * if driver presses this other button {
-    	 * 		buttonCounter++;
-    	 * 		
-    	 * }
-    	 */
-    	
-		if(mOI.driverGamepad.getAButton() && !mLastIterationButtonState)
+		if(mOI.driverGamepad.getYButton() && !mLastIterationButtonState)
     	{
     		buttonCounter++;
     		readAutoMode(buttonCounter);
@@ -158,6 +149,8 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Right Encoder Speed: ", mDrive.getRightSpeed());
     	SmartDashboard.putNumber("Gyro: ", mDrive.getGyroAngle());
     	SmartDashboard.putString("Auto mode: ", autonomousName);
+    	SmartDashboard.putNumber("Speed", mShooter.getSpeed());
+    	SmartDashboard.putBoolean("Is shooter ready?", mShooter.isTargetSpeed());
     }
     
 }

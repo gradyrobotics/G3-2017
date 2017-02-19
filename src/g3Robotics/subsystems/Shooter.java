@@ -9,6 +9,7 @@ public class Shooter extends G3Subsystem {
 	private final VictorSP cyclone;
 	private final VictorSP ballPath;
 	private final Solenoid shooterHood;
+	public double targetSpeed;
 	
 	private Counter counter;
 	
@@ -39,8 +40,13 @@ public class Shooter extends G3Subsystem {
 			shooterMotors.set(highMotorPower);
 		else
 			shooterMotors.set(lowMotorPower);
+		wheelSpeed = targetSpeed;
 	}
 	
+	public void setConstantWheels(double speed)
+	{
+		shooterMotors.set(speed);
+	}
 	public void setTransport(double speed){
 		shooterTransport.set(speed);
 	}
@@ -63,6 +69,10 @@ public class Shooter extends G3Subsystem {
 
     public double getSpeed(){
     	return 60.0/counter.getPeriod(); 
+    }
+    
+    public boolean isTargetSpeed(){
+    	return (targetSpeed > 2750 && targetSpeed < 2850);
     }
     
 }

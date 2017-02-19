@@ -1,5 +1,6 @@
 package g3Robotics.subsystems;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.VictorSP;
 import g3Robotics.Constants;
@@ -8,7 +9,7 @@ import g3Robotics.Constants;
 public class Intake extends G3Subsystem {
 	
 	private VictorSP intakeMotor;
-	private Solenoid intakePiston;
+	private DoubleSolenoid intakePiston;
 	private static Intake instance;
 	private boolean isUp = true;
 	
@@ -27,7 +28,7 @@ public class Intake extends G3Subsystem {
 	public Intake()
 	{
 		intakeMotor = new VictorSP(Constants.intakeMotorPWM);
-		intakePiston = new Solenoid(Constants.intakeSolenoid_1, Constants.intakeSolenoid_2);	
+		intakePiston = new DoubleSolenoid(Constants.intakeSolenoid_1, Constants.intakeSolenoid_2);	
 	}
 	
 	public void setSpeed(double inputSpeed)
@@ -37,13 +38,13 @@ public class Intake extends G3Subsystem {
 	
 	public void deploy()
 	{
-		intakePiston.set(true);	
+		intakePiston.set(DoubleSolenoid.Value.kForward);	
 		isUp = false;
 	}
 	
 	public void raise()
 	{
-		intakePiston.set(false);
+		intakePiston.set(DoubleSolenoid.Value.kReverse);
 		isUp = true;
 	}
 	
