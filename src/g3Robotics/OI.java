@@ -1,5 +1,6 @@
 package g3Robotics;
 
+import edu.wpi.first.wpilibj.Timer;
 import g3Robotics.subsystems.*;
 import g3Robotics.utilities.*;
 
@@ -15,6 +16,10 @@ public class OI
 	private double speedCommand, turnCommand;
 	public boolean lastButtonState = false;
 	public boolean currentButtonState = false;
+	
+	private Timer timer;
+	private double startTime = 0;
+	private boolean isStartTimeSet = false;
 	
 	public static OI getInstance()
     {
@@ -36,6 +41,8 @@ public class OI
 		//Initialize gamepads
 		driverGamepad = new XboxController(0);
 		operatorGamepad = new XboxController(1);
+		timer = new Timer();
+		timer.start();
 	}
 
 	public void processInputs()
@@ -98,7 +105,6 @@ public class OI
 		 *  This outlines the input received from the robot operator 
 		 *  (every subsystem that isn't the drivetrain).
 		 *  
-		 *  Every value here as of 2/11/17 needs to be tuned when the practice robot runs.
 		*/
 		
 		//Change shooter hood angle (only two states)
@@ -108,28 +114,55 @@ public class OI
 		else if (operatorGamepad.getLB()){
 			mShooter.setSmallAngle();
 		}
+		/*
+		if (operatorGamepad.getLeftTrigger()){
+			mShooter.setConstantWheels(-0.8);
+			//mShooter.setTransport(0.6);
+		}
+		else {
+			mShooter.setConstantWheels(0.0);
+			//mShooter.setTransport(0.0);
+		}
+		*/
 		
+		
+		 
 		//Run the shooter wheels to speed
 		if (operatorGamepad.getLeftTrigger())
 		{
 			//The values for the constant wheel speed shot need to be tuned
-			mShooter.setWheels(5000, -0.5, -0.7);
+			if(!isStartTimeSet){
+				startTime = timer.get();
+				isStartTimeSet = true;
+			}
+			if(timer.get() - startTime < 2.0){
+				mShooter.setConstantWheels(-0.9);
+			}
+			else {
+				//mShooter.setConstantWheels(0.0);
+				mShooter.setWheels(2700, -0.0, -1.0);
+			}
 		}
 		else {
+			isStartTimeSet = false;
+			//timer.reset();
+			
 			mShooter.setWheels(0, 0, 0);
+			
 		}
 		
 		//Fire the fuel
-		if(operatorGamepad.getRightTrigger() && !operatorGamepad.getBButton())
+		if(operatorGamepad.getRightTrigger() && !operatorGamepad.getAButton())
 		{
 			//These values need to be tuned
 			mShooter.setBallPath(1.0);
-			mShooter.setCyclone(8.0);
-			mShooter.setTransport(0.5);
+			mShooter.setCyclone(0.6);
+			mShooter.setTransport(1.0);
 		}
-		else if (!operatorGamepad.getRightTrigger() && operatorGamepad.getBButton()) {
+		//Preload
+		else if (!operatorGamepad.getRightTrigger() && operatorGamepad.getAButton()) {
 			mShooter.setBallPath(1.0);
-			mShooter.setCyclone(8.0);
+			mShooter.setCyclone(0.8);
 			mShooter.setTransport(0.0);
 		}
 		else
@@ -139,17 +172,36 @@ public class OI
 			mShooter.setTransport(0.0);
 		}
 		
+		
+		/*
+		if(driverGamepad.getXButton() && !driverGamepad.getRB()){
+			mIntake.setSpeed(0.7);
+		}
+		else if(!driverGamepad.getXButton() && driverGamepad.getRB()){
+			mIntake.setSpeed(-0.7);
+		}
+		else{
+			mIntake.setSpeed(0.0);
+		}
+			
+		if(driverGamepad.getBButton() && !driverGamepad.getYButton()){
+			mIntake.raise();
+		}
+		
+		else if(!driverGamepad.getBButton() && driverGamepad.getYButton()){
+			mIntake.deploy();
+		}
+		*/
+		
+		
 		//Raise and lower intake
-		if(operatorGamepad.getYButton())
-		{
-			if(mIntake.getState() == true){
+		if(operatorGamepad.getYButton() && (mIntake.getState())){
 				mIntake.deploy();
-				mIntake.setSpeed(0.6);
-			}
-			else if(mIntake.getState() == false){
+				mIntake.setSpeed(0.7);
+		}
+		else if(operatorGamepad.getBButton() && !mIntake.getState()){
 				mIntake.raise();
 				mIntake.setSpeed(0.0);
-			}
 		}
 		
 		//Run climber; hold down to run
