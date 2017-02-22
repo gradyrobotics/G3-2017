@@ -126,7 +126,7 @@ public class OI
 		*/
 		
 		
-		 
+		
 		//Run the shooter wheels to speed
 		if (operatorGamepad.getLeftTrigger())
 		{
@@ -140,7 +140,7 @@ public class OI
 			}
 			else {
 				//mShooter.setConstantWheels(0.0);
-				mShooter.setWheels(2700, -0.0, -1.0);
+				mShooter.setWheels(2800, -0.0, -1.0);
 			}
 		}
 		else {
@@ -150,6 +150,7 @@ public class OI
 			mShooter.setWheels(0, 0, 0);
 			
 		}
+		
 		
 		//Fire the fuel
 		if(operatorGamepad.getRightTrigger() && !operatorGamepad.getAButton())
@@ -199,13 +200,13 @@ public class OI
 				mIntake.deploy();
 				mIntake.setSpeed(0.7);
 		}
-		else if(operatorGamepad.getBButton() && !mIntake.getState()){
+		else if(operatroGamepad.getBButton() && !mIntake.getState()){
 				mIntake.raise();
 				mIntake.setSpeed(0.0);
 		}
-		
+		//CHANGED: operator -> driver
 		//Run climber; hold down to run
-		if(operatorGamepad.getXButton())
+		if(driverGamepad.getXButton())
 		{
 			mClimber.setSpeed(0.8);
 		}
