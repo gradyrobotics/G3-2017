@@ -74,6 +74,8 @@ public class SynchronousPID
         {
             m_totalError += m_error;
         }*/
+        
+        //anti-windup
         if ((m_error * m_P < m_maximumOutput) &&
                 (m_error * m_P > m_minimumOutput))
         {
