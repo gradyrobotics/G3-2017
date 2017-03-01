@@ -128,6 +128,9 @@ public class OI
 		
 		 
 	//Run the shooter wheels to speed
+
+		
+		//Run the shooter wheels to speed
 		if (operatorGamepad.getLeftTrigger())
 		{
 			//The values for the constant wheel speed shot need to be tuned
@@ -136,21 +139,22 @@ public class OI
 				isStartTimeSet = true;
 			}
 				if(timer.get() - startTime < 2.5){
-				mShooter.setConstantWheels(-0.9);
+					mShooter.setConstantWheels(-0.9);
 				}
 				else {
 					//mShooter.setConstantWheels(0.0);
-					mShooter.setWheels(3000, -0.0, -1.0); //2800 rpm for constant low angle shot
+					mShooter.setWheels(3000, -0.0, -1.0);
 					//mShooter.setPWheels(3000);
 				}
 		}
+			
 		else {
 			isStartTimeSet = false;
 			timer.reset();
 			
 			mShooter.setWheels(0, 0, 0);
-			
 		}
+		
 		
 		//Fire the fuel
 		if(operatorGamepad.getRightTrigger() && !operatorGamepad.getAButton())
@@ -205,8 +209,9 @@ public class OI
 				mIntake.setSpeed(0.0);
 		}
 		
+		//CHANGED: operator -> driver
 		//Run climber; hold down to run
-		if(operatorGamepad.getXButton())
+		if(driverGamepad.getXButton())
 		{
 			mClimber.setSpeed(0.8);
 		}
