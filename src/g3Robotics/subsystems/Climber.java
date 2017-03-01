@@ -1,5 +1,6 @@
 package g3Robotics.subsystems;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.VictorSP;
 import g3Robotics.Constants;
 

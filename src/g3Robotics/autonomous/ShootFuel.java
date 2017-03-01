@@ -11,7 +11,7 @@ public class ShootFuel extends State{
 		
 		super("ShootFuel");
 		
-		mTimeout = aSeconds *  1000;
+		mTimeout = aSeconds;
 		timer = new Timer();
 	}
 	
@@ -22,14 +22,12 @@ public class ShootFuel extends State{
 
 	public void exit(){
 		timer.stop();
-		mShooter.setTransport(0.0);
-		mShooter.setBallPath(0.0);
-		mShooter.setCyclone(0.0);
+		mShooter.brake();
 	}
 
 	public void running() {
-		mShooter.setTransport(-0.9);
-		mShooter.setBallPath(1.0);
+		mShooter.setTransport(1.0);
+		mShooter.setBallPath(0.6);
 		mShooter.setCyclone(1.0);
 	}
 	

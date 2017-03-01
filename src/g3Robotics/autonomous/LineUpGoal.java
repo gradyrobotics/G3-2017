@@ -30,29 +30,33 @@ public class LineUpGoal extends State
 	
 	public void enter()
 	{
-		mDrive.resetEncoders();
+		//mDrive.resetEncoders();
 		mDrive.reset();
-		mVision.VisionInit();
 		mVision.findTarget();
 		offsetX = mVision.getXOffset();
 		offsetY = mVision.getYOffset();
+		mDrive.lightsOn();
 	}
 	
 	public void running() 
 	{
 		mDrive.setOpenLoop();
-		mVision.findTarget(); // update offset values. 
-		offsetX = mVision.getXOffset();
-		offsetY = mVision.getYOffset();
+		//mVision.findTarget(); // update offset values. 
 
 		if(offsetX < 0)
-			mDrive.driveSpeedTurn(0, 0.3 * offsetX);
-		else if (offsetX > 0)
-			mDrive.driveSpeedTurn(0, -0.3 * offsetX);
+			mDrive.driveSpeedTurn(0, 0.3);
+		else 
+			mDrive.driveSpeedTurn(0, -0.3);
+			
 	}
 
 	public boolean isDone()	 
 	{
-		return (Math.abs(mVision.getYawAngleTarget()) > (Math.abs(mDrive.getGyroAngle()) - 4));
+		//return mVision.isTargetFound();
+		return (Math.abs(mVision.getYawAngleTarget()) > (Math.abs(mDrive.getGyroAngle()) + 21));
+	}
+	
+	public void exit(){
+		mDrive.brake();
 	}
 }

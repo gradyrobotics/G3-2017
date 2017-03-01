@@ -26,6 +26,8 @@ public class Drive extends G3Subsystem
     //private Gyro gyro;
     private PowerDistributionPanel pdp;
     private ADXRS450_Gyro gyro;
+	public DoubleSolenoid platePiston;
+
     //private Gyro gyro;
     
     
@@ -52,11 +54,14 @@ public class Drive extends G3Subsystem
         
         
         double encoderScalingFactor = (Constants.WheelSizeIn*Math.PI)/128; //CHECK THIS
-        leftEncoder = new Encoder(Constants.leftDriveDI1, Constants.leftDriveDI2);
+        leftEncoder = new Encoder(Constants.leftDriveDI2, Constants.leftDriveDI1);
         leftEncoder.setDistancePerPulse(encoderScalingFactor);
-        rightEncoder = new Encoder(Constants.rightDriveDI1, Constants.rightDriveDI2);
+        rightEncoder = new Encoder(Constants.rightDriveDI2, Constants.rightDriveDI1);
         rightEncoder.setDistancePerPulse(-encoderScalingFactor);
         gyro = new ADXRS450_Gyro();
+        
+		platePiston = new DoubleSolenoid(Constants.humanPlayerPlateSolenoid_1, Constants.humanPlayerPlateSolenoid_2);
+
         
         lowGear();
         
@@ -219,7 +224,7 @@ public class Drive extends G3Subsystem
     public synchronized void reset()
     {
         this.driveSpeedTurn(0.0,0.0);
-        gyro.reset();
+        //gyro.reset();
         resetEncoders();
     }
     
@@ -233,6 +238,22 @@ public class Drive extends G3Subsystem
     {
     	lights.set(Relay.Value.kReverse);
     	areLightsOn = false; 
+    }
+//    
+//    public void calibrate(){
+//    	gyro.reset();
+//    }
+//    
+
+	public void raisePlate(){
+		platePiston.set(DoubleSolenoid.Value.kOff);
+	}
+	public void lowerPlate(){
+		platePiston.set(DoubleSolenoid.Value.kForward);
+	}
+    
+    public void lineUpGoal(){
+    	
     }
     
     public boolean getLightState()
