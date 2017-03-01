@@ -23,6 +23,8 @@ public class Constants {
 	public static final int intakeSolenoid_2 = 2;
 	public static final int shooterHoodSolenoid_1 = 3;
 	public static final int shooterHoodSolenoid_2 = 4;
+	public static final int humanPlayerPlateSolenoid_1 = 5;
+	public static final int humanPlayerPlateSolenoid_2 = 6;
 	
 	//Relay Outputs
 	public static final int lightRelay = 0;

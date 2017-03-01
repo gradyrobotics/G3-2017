@@ -1,6 +1,7 @@
 package g3Robotics.subsystems;
 
 import g3Robotics.Constants;
+import g3Robotics.utilities.*;
 import edu.wpi.first.wpilibj.*;
 
 public class Shooter extends G3Subsystem {
@@ -8,12 +9,15 @@ public class Shooter extends G3Subsystem {
 	private final VictorSP shooterTransport;
 	private final VictorSP cyclone;
 	private final VictorSP ballPath;
-	private final Solenoid shooterHood;
+	private final DoubleSolenoid shooterHood;
+	
 	public double targetSpeed;
 	
 	private Counter counter;
+	private double mSetpoint;
 	
 	private static Shooter instance = null;
+	private VelocityPID wheelController;
 	
 	private Shooter()
 	{
@@ -23,7 +27,9 @@ public class Shooter extends G3Subsystem {
 		shooterTransport = new VictorSP(Constants.shooterTransportPWM);
 		cyclone = new VictorSP(Constants.cycloneMotorPWM);
 		ballPath = new VictorSP(Constants.ballPathMotorPWM);
-		shooterHood = new Solenoid(Constants.shooterHoodSolenoid_1, Constants.shooterHoodSolenoid_2);
+		shooterHood = new DoubleSolenoid(Constants.shooterHoodSolenoid_1, Constants.shooterHoodSolenoid_2);
+		
+		wheelController = new VelocityPID(0.4, 0.0, 0.0);
 	}
 	
 	public static Shooter getInstance(){
@@ -43,6 +49,12 @@ public class Shooter extends G3Subsystem {
 		wheelSpeed = targetSpeed;
 	}
 	
+	public void setPWheels(double setpoint){
+		mSetpoint = setpoint;
+		wheelController.setSetpoint(mSetpoint);
+		shooterMotors.set(wheelController.calculate(getSpeed()));
+	}
+	
 	public void setConstantWheels(double speed)
 	{
 		shooterMotors.set(speed);
@@ -60,11 +72,17 @@ public class Shooter extends G3Subsystem {
 	}
 	
 	public void setLargeAngle(){
-		shooterHood.set(true);
+		shooterHood.set(DoubleSolenoid.Value.kForward);
 	}
 	
 	public void setSmallAngle(){
-		shooterHood.set(false);
+		shooterHood.set(DoubleSolenoid.Value.kOff);
+	}
+	
+	public void brake(){
+		shooterTransport.set(0.0);
+		cyclone.set(0.0);
+		ballPath.set(0.0);
 	}
 
     public double getSpeed(){

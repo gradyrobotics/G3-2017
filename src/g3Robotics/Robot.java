@@ -40,9 +40,12 @@ public class Robot extends IterativeRobot {
     
     public void robotInit() {
     	
+    	
     	mDrive = Drive.getInstance();
     	mOI = OI.getInstance();
     	mShooter = Shooter.getInstance();
+    	
+    	//mDrive.calibrate();
     	
     	mVision = Vision.getInstance();
         mVision.VisionInit();
@@ -60,6 +63,7 @@ public class Robot extends IterativeRobot {
      */
     public void disabledPeriodic() {
     	logToDashboard();
+    	//mVision.VisionInit();
     	mVision.findTarget();
     	
 		if(mOI.driverGamepad.getYButton() && !mLastIterationButtonState)
@@ -67,7 +71,7 @@ public class Robot extends IterativeRobot {
     		buttonCounter++;
     		readAutoMode(buttonCounter);
     		
-	    	if(buttonCounter > 3)
+	    	if(buttonCounter > 7)
 	    	{
 	    		buttonCounter = 0;
 	    	}
@@ -110,6 +114,26 @@ public class Robot extends IterativeRobot {
 	    		mPropertyReader.parseAutonomousFile("/home/lvuser/AimAtGoal.txt");
 	    		autonomousName = "Aim At Goal Test";
 	    		break;
+	    	case 3:
+	    		mPropertyReader.parseAutonomousFile("/home/lvuser/GearFirstClose.txt");
+	    		autonomousName = "Gear First Close";
+	    		break;
+	    	case 4:
+	    		mPropertyReader.parseAutonomousFile("/home/lvuser/GearFirstFar.txt");
+	    		autonomousName = "Gear First Far";
+	    		break;
+	    	case 5:
+	    		mPropertyReader.parseAutonomousFile("/home/lvuser/GearSecondClose");
+	    		autonomousName = "Gear Second Close";
+	    		break;
+	    	case 6:
+	    		mPropertyReader.parseAutonomousFile("/home/lvuser/GearThirdClose.txt");
+	    		autonomousName = "Gear Third Close";
+	    		break;
+	    	case 7:
+	    		mPropertyReader.parseAutonomousFile("home/lvuser/HopperShoot.txt");
+	    		autonomousName = "Hopper + Shoot";
+	    		break;
     		default:
     			mPropertyReader.parseAutonomousFile("/home/lvuser/DoNothing.txt");
     			autonomousName = "Do Nothing";
@@ -151,6 +175,8 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putString("Auto mode: ", autonomousName);
     	SmartDashboard.putNumber("Speed", mShooter.getSpeed());
     	SmartDashboard.putBoolean("Is shooter ready?", mShooter.isTargetSpeed());
+    	SmartDashboard.putNumber("Yaw Angle From Target: ", mVision.getYawAngleTarget());
+    	
     }
     
 }

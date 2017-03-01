@@ -114,20 +114,20 @@ public class OI
 		else if (operatorGamepad.getLB()){
 			mShooter.setSmallAngle();
 		}
-		/*
-		if (operatorGamepad.getLeftTrigger()){
-			mShooter.setConstantWheels(-0.8);
-			//mShooter.setTransport(0.6);
-		}
-		else {
-			mShooter.setConstantWheels(0.0);
-			//mShooter.setTransport(0.0);
-		}
-		*/
+		
+//		if (operatorGamepad.getLeftTrigger()){
+//			mShooter.setConstantWheels(-0.8);
+//			//mShooter.setTransport(0.6);
+//		}
+//		else {
+//			mShooter.setConstantWheels(0.0);
+//			//mShooter.setTransport(0.0);
+//		}
+		
 		
 		
 		 
-		//Run the shooter wheels to speed
+	//Run the shooter wheels to speed
 		if (operatorGamepad.getLeftTrigger())
 		{
 			//The values for the constant wheel speed shot need to be tuned
@@ -135,17 +135,18 @@ public class OI
 				startTime = timer.get();
 				isStartTimeSet = true;
 			}
-			if(timer.get() - startTime < 2.0){
+				if(timer.get() - startTime < 2.5){
 				mShooter.setConstantWheels(-0.9);
-			}
-			else {
-				//mShooter.setConstantWheels(0.0);
-				mShooter.setWheels(2700, -0.0, -1.0);
-			}
+				}
+				else {
+					//mShooter.setConstantWheels(0.0);
+					mShooter.setWheels(3000, -0.0, -1.0); //2800 rpm for constant low angle shot
+					//mShooter.setPWheels(3000);
+				}
 		}
 		else {
 			isStartTimeSet = false;
-			//timer.reset();
+			timer.reset();
 			
 			mShooter.setWheels(0, 0, 0);
 			
@@ -197,7 +198,7 @@ public class OI
 		//Raise and lower intake
 		if(operatorGamepad.getYButton() && (mIntake.getState())){
 				mIntake.deploy();
-				mIntake.setSpeed(0.7);
+				mIntake.setSpeed(1.0);
 		}
 		else if(operatorGamepad.getBButton() && !mIntake.getState()){
 				mIntake.raise();

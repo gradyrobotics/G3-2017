@@ -10,7 +10,7 @@ public class RevUpShooter extends State{
 	
 	public RevUpShooter(double aSeconds) {
 		super("RevUpShooter");
-		mTimeout = aSeconds *  1000;
+		mTimeout = aSeconds;
 		
 		timer = new Timer();
 	}
