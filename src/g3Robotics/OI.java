@@ -211,7 +211,7 @@ public class OI
 		
 		//CHANGED: operator -> driver
 		//Run climber; hold down to run
-		if(driverGamepad.getXButton())
+		if(operatorGamepad.getXButton())
 		{
 			mClimber.setSpeed(0.8);
 		}
