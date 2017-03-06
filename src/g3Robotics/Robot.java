@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import g3Robotics.autonomous.*;
 import g3Robotics.fileio.*;
+import g3Robotics.logger.Logger;
 import g3Robotics.vision.*;
 import g3Robotics.subsystems.*;
 import g3Robotics.utilities.XboxController;
@@ -28,6 +29,7 @@ public class Robot extends IterativeRobot {
     Shooter mShooter;
     Drive mDrive;
     OI mOI;
+    Logger mLogger;
     
     PropertyReader mPropertyReader;
     PropertySet mProperties;
@@ -37,6 +39,7 @@ public class Robot extends IterativeRobot {
     StateMachine mAutonomousStateMachine;
     boolean mLastIterationButtonState = false;
     boolean resetState = false; 
+    boolean wasEnabledFlag = true;
     int buttonCounter;
     
     Timer timer;
@@ -48,6 +51,7 @@ public class Robot extends IterativeRobot {
     	mDrive = Drive.getInstance();
     	mOI = OI.getInstance();
     	mShooter = Shooter.getInstance();
+    	mLogger = Logger.getInstance();
     	
     	mDrive.calibrate();
     	mDrive.reset();
@@ -95,12 +99,19 @@ public class Robot extends IterativeRobot {
    	 	resetState  = mOI.driverGamepad.getBButton();
     }
     
+    public void disabledInit() {
+    	if (wasEnabledFlag) {
+    		mLogger.writeLog();
+    	}
+    }
+    
     public void autonomousInit() {
     	timer.start();
     	mDrive.reset();
     	timer.reset();
     	mDrive.zeroGyro();
     	autoStepNumber = 1;
+    	//wasEnabledFlag = true;
     	
     }
 
@@ -348,8 +359,10 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+    	wasEnabledFlag = true;
         mOI.processInputs();
         logToDashboard();
+        mLogger.log(mShooter.getSpeed());
         //mVision.findTarget();
     }
     
