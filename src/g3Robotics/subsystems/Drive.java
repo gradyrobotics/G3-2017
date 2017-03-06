@@ -234,6 +234,7 @@ public class Drive extends G3Subsystem
     public synchronized void reset()
     {
         this.driveSpeedTurn(0.0,0.0);
+        this.zeroGyro();
         resetEncoders();
     }
     
