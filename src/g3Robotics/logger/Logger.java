@@ -38,7 +38,7 @@ public class Logger {
 	}
 	
 	public void log(double input) {
-		outString.append(Long.toString(System.currentTimeMillis()));
+		outString.append(Long.toString(System.currentTimeMillis() - startTime));
 		outString.append(',');
 		outString.append(Double.toString(input));
 		outString.append('\n');
