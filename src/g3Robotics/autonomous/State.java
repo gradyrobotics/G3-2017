@@ -15,6 +15,8 @@ public abstract class State
 {
     private final String mName;
     protected final Drive mDrive;
+    protected final Shooter mShooter;
+    //protected final Intake mIntake;
    
     /**
      * Create a new state.
@@ -26,6 +28,8 @@ public abstract class State
         mName = aName;
         //Add instances of subsystems
         mDrive = Drive.getInstance();
+        mShooter = Shooter.getInstance();
+       // mIntake = Intake.getInstance();
     }
 
     public String toString()

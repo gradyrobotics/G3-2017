@@ -12,36 +12,39 @@ import g3Robotics.subsystems.*;
  */
 public class MixedDrive extends State
 {
-    private double mDistance;
-    
+    private double targetDistance;
     public MixedDrive(double distance)
     {
-        super("MixedDrive");
-       
-        mDistance = distance;
+    	super("MixedDrive");
+       targetDistance = distance;
     }
 
     public void enter()
     {
-        mDrive.resetEncoders();
-        mDrive.reset();
+      mDrive.reset(); 
     }
     
     public void exit()
     {
-        mDrive.setOpenLoop();
-        mDrive.driveLeftRight(0.0,0.0);
+      mDrive.brake();  
     }
     
     public void running() 
     {
-    	mDrive.driveSpeedTurn(1.0, 0.0);
+    	if(targetDistance >= 0)
+    	{
+    		 mDrive.driveSpeedTurn(0.6, 0.0);
+    	}
+    	else	
+    	{
+    		mDrive.driveSpeedTurn(-0.6, 0.0);
+    	}
     	
     }
 
     public boolean isDone() 
-    {
-        return mDrive.getAverageDistance() == mDistance;
+    { 	
+    	return Math.abs(mDrive.getAverageDistance()) >= (Math.abs(targetDistance));
     }
 }
 

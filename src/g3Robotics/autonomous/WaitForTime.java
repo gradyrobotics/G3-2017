@@ -1,5 +1,8 @@
 package g3Robotics.autonomous;
 
+import edu.wpi.first.wpilibj.Timer;
+
+
 /**
  * State to wait for a specified number of milliseconds.
  * 
@@ -8,17 +11,18 @@ package g3Robotics.autonomous;
 public class WaitForTime extends State
 {
     long mTimeout;
+    Timer timer;
 
-    public WaitForTime(int aMilliseconds)
+    public WaitForTime(int timeout)
     {
         super("WaitForTime");
 
-        mTimeout = aMilliseconds;
+        mTimeout = timeout;
     }
 
     public void enter()
     {
-        mTimeout += System.currentTimeMillis();
+    	timer.start();
     }
 
     public void running()
@@ -28,11 +32,12 @@ public class WaitForTime extends State
 
     public void exit()
     {
+    	timer.stop();
     }
 
     public boolean isDone()
     {
-        return mTimeout < System.currentTimeMillis();
+        return timer.get() > mTimeout;
     }
 
 }

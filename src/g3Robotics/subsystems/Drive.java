@@ -17,14 +17,21 @@ public class Drive extends G3Subsystem
     // Actuators
     private final VictorSP leftMotor1;
     private final VictorSP rightMotor1;
-    private final Solenoid shifter;
+    private final DoubleSolenoid shifter;
+    private final Relay lights;
     
     // Sensors
     private Encoder leftEncoder;
     private Encoder rightEncoder;
     //private Gyro gyro;
     private PowerDistributionPanel pdp;
-    //private ADXRS450_Gyro gyro;
+    private ADXRS450_Gyro gyro;
+	public DoubleSolenoid platePiston;
+	
+
+    //private Gyro gyro;
+    
+
     
     //Variables
     private double leftDistance = 0;
@@ -33,6 +40,10 @@ public class Drive extends G3Subsystem
     private double lastRightDistance = 0;
     private double leftRaw = 0;
     private double rightRaw =0;
+    private boolean areLightsOn = false;
+    private boolean isPlateUp = false;
+    private boolean isInverted = false;
+    private double gyroZero = 0.0;
 
     private static Drive instance = null;
 
@@ -40,17 +51,24 @@ public class Drive extends G3Subsystem
     {
         leftMotor1 = new VictorSP(Constants.leftDrivePWM);
         rightMotor1 = new VictorSP(Constants.rightDrivePWM);
-        shifter = new Solenoid(Constants.shifterSolenoid);
+        shifter = new DoubleSolenoid(Constants.shifterSolenoid_1, Constants.shifterSolenoid_2);
+        lights = new Relay(Constants.lightRelay);
         
         pdp = new PowerDistributionPanel();
         
-
+        
+        
         double encoderScalingFactor = (Constants.WheelSizeIn*Math.PI)/128; //CHECK THIS
-        leftEncoder = new Encoder(Constants.leftDriveDI1, Constants.leftDriveDI2);
+        leftEncoder = new Encoder(Constants.leftDriveDI2, Constants.leftDriveDI1);
         leftEncoder.setDistancePerPulse(encoderScalingFactor);
-        rightEncoder = new Encoder(Constants.rightDriveDI1, Constants.rightDriveDI2);
+        rightEncoder = new Encoder(Constants.rightDriveDI2, Constants.rightDriveDI1);
         rightEncoder.setDistancePerPulse(-encoderScalingFactor);
-        //gyro = new ADXRS450_Gyro();
+
+        gyro = new ADXRS450_Gyro();
+        
+		platePiston = new DoubleSolenoid(Constants.humanPlayerPlateSolenoid_1, Constants.humanPlayerPlateSolenoid_2);
+
+
         
         lowGear();
         
@@ -82,8 +100,9 @@ public class Drive extends G3Subsystem
     {
     	double left;
     	double right;
-    	double adjustedLeft;
-    	double adjustedRight;
+    	if(isInverted()) {
+    		speed = -speed;
+    	}
     	
     	left = -speed+turn;
     	right = -speed - turn;
@@ -103,22 +122,23 @@ public class Drive extends G3Subsystem
     
     public void lowGear()
     {
-    	shifter.set(false);
+    	shifter.set(DoubleSolenoid.Value.kReverse);
     }
     
     public void highGear()
     {
-    	shifter.set(true);
+    	shifter.set(DoubleSolenoid.Value.kForward);
     }
+    
     
     public double getLeftDistance()
     {
-        return -leftEncoder.getDistance();
+        return leftEncoder.getDistance();
     }
     
     public double getRightDistance()
     {
-        return -rightEncoder.getDistance();
+        return rightEncoder.getDistance();
     }
     
     public synchronized double getAverageDistance()
@@ -155,9 +175,12 @@ public class Drive extends G3Subsystem
         return (getLeftSpeed()+getRightSpeed())/2.0;
     }
     
+    
     public double getGyroAngle()
     {
-        return 0;//gyro.getAngle();
+
+        return gyro.getAngle() - gyroZero;
+
     }
     
      public void driveArc(double speed, double arc)
@@ -207,10 +230,66 @@ public class Drive extends G3Subsystem
     {
     }
 
+   
     public synchronized void reset()
     {
         this.driveSpeedTurn(0.0,0.0);
-        //gyro.reset();
         resetEncoders();
     }
+    
+    public void lightsOn()
+    { 
+    	lights.set(Relay.Value.kForward);
+    	areLightsOn = true;
+    }
+    
+    public void lightsOff()
+    {
+    	lights.set(Relay.Value.kReverse);
+    	areLightsOn = false; 
+    }
+//    
+//    public void calibrate(){
+//    	gyro.reset();
+//    }
+//    
+
+	public void raisePlate(){
+		platePiston.set(DoubleSolenoid.Value.kForward);
+		isPlateUp = true;
+	}
+	public void lowerPlate(){
+		platePiston.set(DoubleSolenoid.Value.kReverse);
+		isPlateUp = false;
+	}
+	
+	public boolean getPlateState(){
+		return isPlateUp;
+	}
+    
+    public void lineUpGoal(){
+    	
+    }
+    
+    public boolean getLightState()
+    {
+    	return areLightsOn;
+    }
+    
+    public void calibrate() {
+    	gyro.calibrate();
+    }
+    
+    public void zeroGyro() {
+    	gyroZero = gyro.getAngle();
+    }
+    
+    public boolean isInverted() {
+    	return isInverted;
+    }
+    
+    public void invert() {
+    	isInverted = !isInverted;
+    }
+
 }

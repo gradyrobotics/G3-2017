@@ -1,5 +1,6 @@
 package g3Robotics.vision;
 
+import edu.wpi.cscore.AxisCamera;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.vision.VisionRunner;
@@ -7,6 +8,7 @@ import edu.wpi.first.wpilibj.vision.VisionThread;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 import g3Robotics.vision.GripPipeline;
+import g3Robotics.utilities.G3Math;
 
 import g3Robotics.*;
 
@@ -18,6 +20,15 @@ public class Vision {
     private double centerY = 0.0;
     private double xOffset = 0.0;
     private double yOffset = 0.0;
+    
+    private final double horizontalFieldOfView = 43.5;
+    private final double verticleFieldOfView = 40.0;
+    private double focalLength = 401.03;
+    //private double viewingAngle = Math.acos()
+    
+
+    private double distanceFromGoal; 
+    private double groundDistanceFromGoal;
     
     private VisionThread visionThread;
     
@@ -32,12 +43,12 @@ public class Vision {
         }
         return instance;
     }
-    
+    	
     public void VisionInit()
     {
-    	UsbCamera camera =  CameraServer.getInstance().startAutomaticCapture(0);
-    	camera.setResolution(Image_Width, Image_Height);
-    	
+		AxisCamera camera = CameraServer.getInstance().addAxisCamera("Axis Camera","10.16.48.30");
+    	//camera.setResolution(Image_Width, Image_Height);
+
     	visionThread = new VisionThread(camera, new GripPipeline(), pipeline -> {
     		
             if (!pipeline.filterContoursOutput().isEmpty()) {
@@ -49,8 +60,8 @@ public class Vision {
             	}
             }	
     	});
-    	
-    	visionThread.start();
+    		
+    	visionThread.start();	
     }
     
     public synchronized void findTarget() {
@@ -58,14 +69,26 @@ public class Vision {
     		yOffset = centerY - Image_Height/2;
     }
     
+    public double getHypotenuseDistance(){
+    	return distanceFromGoal;
+    }
+    
+    public double getGroundDistance(){
+    	return groundDistanceFromGoal;
+    }
+    
+    public double getYawAngleTarget(){
+    	return G3Math.radiansToDegrees((Math.atan((centerX - (Image_Width / 2))/focalLength)));
+    }
+    
     public boolean isTargetFound(){
-    	if ((Math.abs(xOffset) < 2) && (Math.abs(yOffset) < 2)){
+    	if (Math.abs(xOffset) < 2){
     		return true;
     	}
     	else
     		return false;
     }
-    
+    	
     public double getCenterX(){
     	return centerX;
     }

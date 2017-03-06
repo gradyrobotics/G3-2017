@@ -117,6 +117,10 @@ public class G3Math
         return angle;
     }
     
+    public static double radiansToDegrees(double angle){
+    	return (180 / Math.PI) * angle;
+    }
+    
     public static double applyDeadband(double value, double deadband)
     {
         if( value > -deadband && value < deadband ) 

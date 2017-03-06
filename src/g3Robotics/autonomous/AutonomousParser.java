@@ -1,4 +1,4 @@
-package g3Robotics.autonomous;
+	package g3Robotics.autonomous;
 
 import g3Robotics.fileio.*;
 
@@ -49,12 +49,30 @@ public class AutonomousParser
                         //double lParam3 = mProperties.getDoubleValue("AutonomousThirdParam" + Integer.toString(i+1), 0);
                         lStates[i] = new MixedDrive(lParam1);
                     }
-                    else if (lStateName.equals("LineUpGoal"))
+//                    else if (lStateName.equals("LineUpGoal"))
+//                    {                    	
+//                    	lStates[i] = new LineUpGoal();
+//                    }
+                    else if (lStateName.equals("MixedTurn"))
                     {
-                    	//double lParam1 = mProperties.getDoubleValue("AutonomousFirstParam" + Integer.toString(i+1), 0);
-                    	
-                    	lStates[i] = new LineUpGoal();
+                    	int lParam1 = mProperties.getIntValue("AutonomousFirstParam" + Integer.toString(i+1), 0);
+                    	lStates[i] = new MixedTurn(lParam1);
                     }
+                    else if (lStateName.equals("RevUpShooter"))
+                    {
+                    	double lParam1 = mProperties.getDoubleValue("AutonomousFirstParam" + Integer.toString(i+1), 0);
+                    	lStates[i] = new RevUpShooter(lParam1);
+                    }
+                    else if (lStateName.equals("ShootFuel"))
+                    {
+                    	double lParam1 = mProperties.getDoubleValue("AutonomousFirstParam" + Integer.toString(i+1), 0);
+                    	lStates[i] = new ShootFuel(lParam1);
+                    }
+//                    else if (lStateName.equals("DropIntake"))
+//                    {
+//                    	double lParam1 = mProperties.getDoubleValue("AutonomousFirstParam" + Integer.toString(i+1), 0);
+//                    	lStates[i] = new DropIntake(lParam1);
+//                    }
                     //TODO: Add additional States as they are developed
                     /*
                     // Example:
@@ -66,7 +84,7 @@ public class AutonomousParser
                         lStates[i] = new MyNewState(lParam1, lParam2);
                     }
                     */
-                    
+ 
                     System.out.println(lStates[i].toString());
                 }
             }
