@@ -18,7 +18,8 @@ public class Constants {
 	public static final int ballPathMotorPWM = 6;
 
 	//Solenoid Outputs
-	public static final int shifterSolenoid = 0;
+	public static final int shifterSolenoid_1 = 0;
+	public static final int shifterSolenoid_2 = 7;
 	public static final int intakeSolenoid_1 = 1;
 	public static final int intakeSolenoid_2 = 2;
 	public static final int shooterHoodSolenoid_1 = 3;
@@ -30,8 +31,8 @@ public class Constants {
 	public static final int lightRelay = 0;
 	
 	//Digital Inputs
-	public static final int leftDriveDI1 = 0;
-	public static final int leftDriveDI2 = 1;
+	public static final int leftDriveDI1 = 6;
+	public static final int leftDriveDI2 = 7;
 	public static final int rightDriveDI1 = 2;
 	public static final int rightDriveDI2 = 3;
 	

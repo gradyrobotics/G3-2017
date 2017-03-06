@@ -3,6 +3,7 @@ package g3Robotics;
 import edu.wpi.first.wpilibj.Timer;
 import g3Robotics.subsystems.*;
 import g3Robotics.utilities.*;
+import g3Robotics.vision.Vision;
 
 public class OI 
 {
@@ -11,13 +12,19 @@ public class OI
 	private final Shooter mShooter;
 	private final Intake mIntake;
 	private final Climber mClimber;
+	private final Vision mVision;
 	public XboxController driverGamepad;
 	public XboxController operatorGamepad;
 	private double speedCommand, turnCommand;
 	public boolean lastButtonState = false;
 	public boolean currentButtonState = false;
+	public boolean currentInvertState = false;
+	public boolean lastInvertState = false;
 	
 	private Timer timer;
+	private Timer backupTimer;
+	private double backupStartTime = 0;
+	private boolean isBackupStartTimeSet = false;
 	private double startTime = 0;
 	private boolean isStartTimeSet = false;
 	
@@ -37,12 +44,15 @@ public class OI
 		mShooter = Shooter.getInstance();
 		mIntake = Intake.getInstance();
 		mClimber = Climber.getInstance();
+		mVision = Vision.getInstance();
 		
 		//Initialize gamepads
 		driverGamepad = new XboxController(0);
 		operatorGamepad = new XboxController(1);
 		timer = new Timer();
+		backupTimer = new Timer();
 		timer.start();
+		backupTimer.start();
 	}
 
 	public void processInputs()
@@ -51,7 +61,7 @@ public class OI
 		 *  PILOT 
 		 * 
 		 *  This outlines the inputs received from the robot driver.*/
-		
+
 		speedCommand = G3Math.applyDeadband(driverGamepad.getLeftYAxis(), 0.2);
 		turnCommand = G3Math.applyDeadband(driverGamepad.getRightXAxis(), 0.2);
 		
@@ -68,15 +78,51 @@ public class OI
 		}
 		//speedCommand = Math.pow(speedCommand, 2);
 		//turnCommand = Math.pow(turnCommand, 2);
-		mDrive.driveSpeedTurn(speedCommand, turnCommand);
 		
-		if (driverGamepad.getLB())
-		{
+		
+		//BASED ON TIME; NEED TO SWITCH TO DISTANCE
+		if(driverGamepad.getLeftTrigger()){
+			if(!isBackupStartTimeSet){
+				backupStartTime = backupTimer.get();
+				isBackupStartTimeSet = true;
+			}
+				if(backupTimer.get() - backupStartTime < 0.1){
+					mDrive.driveSpeedTurn(0.8, 0.0);
+				}
+				else {
+					mDrive.driveSpeedTurn(0.0, 0.0);
+				}
+		}
+		else {
+			isBackupStartTimeSet = false;
+			backupTimer.reset();
+
+			mDrive.driveSpeedTurn(speedCommand, turnCommand);
+		}
+		
+		
+		if(driverGamepad.getLB()){
 			mDrive.highGear();
 		}
-		else
-		{
+		else {
 			mDrive.lowGear();
+		}
+		
+		if(driverGamepad.getLeftTrigger()){
+			if(!isBackupStartTimeSet){
+				backupStartTime = backupTimer.get();
+				isBackupStartTimeSet = true;
+			}
+				if(backupTimer.get() - backupStartTime < 0.1){
+					mDrive.driveSpeedTurn(-0.8, 0.0);
+				}
+				else {
+					mDrive.driveSpeedTurn(0.0, 0.0);
+				}
+		}
+		else {
+			isBackupStartTimeSet = false;
+			backupTimer.reset();
 		}
 		
 		//Overly complicated state machine for the LED ring
@@ -99,6 +145,23 @@ public class OI
 		} 
 		
 		lastButtonState = currentButtonState;
+		
+		if(driverGamepad.getBButton())
+		{
+			currentInvertState = true;
+		}
+		else
+		{
+			currentInvertState = false;
+		}
+		
+		if (currentInvertState && !lastInvertState)
+		{
+			mDrive.invert();
+		}
+		 
+		
+		lastInvertState = currentInvertState;
 		
 		/**
 		 *  OPERATOR
@@ -139,11 +202,11 @@ public class OI
 				isStartTimeSet = true;
 			}
 				if(timer.get() - startTime < 2.5){
-					mShooter.setConstantWheels(-0.9);
+					mShooter.setConstantWheels(0.9);
 				}
 				else {
-					//mShooter.setConstantWheels(0.0);
-					mShooter.setWheels(3000, -0.0, -1.0);
+					//mShooter.setConstantWheels(-0.9);
+					mShooter.setWheels(3500, 0.0, 1.0);
 					//mShooter.setPWheels(3000);
 				}
 		}
@@ -157,24 +220,25 @@ public class OI
 		
 		
 		//Fire the fuel
-		if(operatorGamepad.getRightTrigger() && !operatorGamepad.getAButton())
+		if(operatorGamepad.getRightTrigger())
 		{
 			//These values need to be tuned
 			mShooter.setBallPath(1.0);
 			mShooter.setCyclone(0.6);
-			mShooter.setTransport(1.0);
-		}
-		//Preload
-		else if (!operatorGamepad.getRightTrigger() && operatorGamepad.getAButton()) {
-			mShooter.setBallPath(1.0);
-			mShooter.setCyclone(0.8);
-			mShooter.setTransport(0.0);
+			mShooter.setTransport(-1.0);
 		}
 		else
 		{
 			mShooter.setBallPath(0.0);
 			mShooter.setCyclone(0.0);
 			mShooter.setTransport(0.0);
+		}
+		
+		if(operatorGamepad.getAButton() && !mDrive.getPlateState()){
+			mDrive.raisePlate();
+		}
+		else if(operatorGamepad.getAButton() && mDrive.getPlateState()){
+			mDrive.lowerPlate();
 		}
 		
 		
@@ -209,7 +273,7 @@ public class OI
 				mIntake.setSpeed(0.0);
 		}
 		
-		//CHANGED: operator -> driver
+		
 		//Run climber; hold down to run
 		if(operatorGamepad.getXButton())
 		{

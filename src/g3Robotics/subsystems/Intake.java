@@ -1,3 +1,4 @@
+
 package g3Robotics.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -38,13 +39,13 @@ public class Intake extends G3Subsystem {
 	
 	public void deploy()
 	{
-		intakePiston.set(DoubleSolenoid.Value.kForward);	
+		intakePiston.set(DoubleSolenoid.Value.kReverse);	
 		isUp = false;
 	}
 	
 	public void raise()
 	{
-		intakePiston.set(DoubleSolenoid.Value.kReverse);
+		intakePiston.set(DoubleSolenoid.Value.kForward);
 		isUp = true;
 	}
 	
