@@ -17,7 +17,7 @@ public class Drive extends G3Subsystem
     // Actuators
     private final VictorSP leftMotor1;
     private final VictorSP rightMotor1;
-    private final Solenoid shifter;
+    private final DoubleSolenoid shifter;
     private final Relay lights;
     
     // Sensors
@@ -27,6 +27,7 @@ public class Drive extends G3Subsystem
     private PowerDistributionPanel pdp;
     private ADXRS450_Gyro gyro;
 	public DoubleSolenoid platePiston;
+	
 
     //private Gyro gyro;
     
@@ -39,6 +40,9 @@ public class Drive extends G3Subsystem
     private double leftRaw = 0;
     private double rightRaw =0;
     private boolean areLightsOn = false;
+    private boolean isPlateUp = false;
+    private boolean isInverted = false;
+    private double gyroZero = 0.0;
 
     private static Drive instance = null;
 
@@ -46,7 +50,7 @@ public class Drive extends G3Subsystem
     {
         leftMotor1 = new VictorSP(Constants.leftDrivePWM);
         rightMotor1 = new VictorSP(Constants.rightDrivePWM);
-        shifter = new Solenoid(Constants.shifterSolenoid);
+        shifter = new DoubleSolenoid(Constants.shifterSolenoid_1, Constants.shifterSolenoid_2);
         lights = new Relay(Constants.lightRelay);
         
         pdp = new PowerDistributionPanel();
@@ -93,8 +97,9 @@ public class Drive extends G3Subsystem
     {
     	double left;
     	double right;
-    	double adjustedLeft;
-    	double adjustedRight;
+    	if(isInverted()) {
+    		speed = -speed;
+    	}
     	
     	left = -speed+turn;
     	right = -speed - turn;
@@ -114,12 +119,12 @@ public class Drive extends G3Subsystem
     
     public void lowGear()
     {
-    	shifter.set(false);
+    	shifter.set(DoubleSolenoid.Value.kReverse);
     }
     
     public void highGear()
     {
-    	shifter.set(true);
+    	shifter.set(DoubleSolenoid.Value.kForward);
     }
     
     
@@ -170,7 +175,7 @@ public class Drive extends G3Subsystem
     
     public double getGyroAngle()
     {
-        return gyro.getAngle();
+        return gyro.getAngle() - gyroZero;
     }
     
      public void driveArc(double speed, double arc)
@@ -224,7 +229,6 @@ public class Drive extends G3Subsystem
     public synchronized void reset()
     {
         this.driveSpeedTurn(0.0,0.0);
-        //gyro.reset();
         resetEncoders();
     }
     
@@ -246,10 +250,16 @@ public class Drive extends G3Subsystem
 //    
 
 	public void raisePlate(){
-		platePiston.set(DoubleSolenoid.Value.kOff);
+		platePiston.set(DoubleSolenoid.Value.kForward);
+		isPlateUp = true;
 	}
 	public void lowerPlate(){
-		platePiston.set(DoubleSolenoid.Value.kForward);
+		platePiston.set(DoubleSolenoid.Value.kReverse);
+		isPlateUp = false;
+	}
+	
+	public boolean getPlateState(){
+		return isPlateUp;
 	}
     
     public void lineUpGoal(){
@@ -260,4 +270,21 @@ public class Drive extends G3Subsystem
     {
     	return areLightsOn;
     }
+    
+    public void calibrate() {
+    	gyro.calibrate();
+    }
+    
+    public void zeroGyro() {
+    	gyroZero = gyro.getAngle();
+    }
+    
+    public boolean isInverted() {
+    	return isInverted;
+    }
+    
+    public void invert() {
+    	isInverted = !isInverted;
+    }
+
 }

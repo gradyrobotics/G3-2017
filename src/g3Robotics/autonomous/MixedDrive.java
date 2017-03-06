@@ -33,25 +33,18 @@ public class MixedDrive extends State
     {
     	if(targetDistance >= 0)
     	{
-    		 mDrive.driveSpeedTurn(1.0,0.0);
+    		 mDrive.driveSpeedTurn(0.6, 0.0);
     	}
-    	else
+    	else	
     	{
-    		mDrive.driveSpeedTurn(-1.0,0.0);
+    		mDrive.driveSpeedTurn(-0.6, 0.0);
     	}
     	
     }
 
     public boolean isDone() 
-    {
-    	if(targetDistance >= 0)
-    	{
-    		return mDrive.getAverageDistance() >= targetDistance;
-    	}
-    	else
-    	{
-    		return mDrive.getAverageDistance() <= targetDistance;
-    	}
+    { 	
+    	return Math.abs(mDrive.getAverageDistance()) >= (Math.abs(targetDistance));
     }
 }
 
