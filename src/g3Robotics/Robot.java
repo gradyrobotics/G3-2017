@@ -102,6 +102,7 @@ public class Robot extends IterativeRobot {
     public void disabledInit() {
     	if (wasEnabledFlag) {
     		mLogger.writeLog();
+		wasEnabledFlag = false;
     	}
     }
     
