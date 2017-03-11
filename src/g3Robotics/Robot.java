@@ -102,6 +102,7 @@ public class Robot extends IterativeRobot {
     	mLogger.isEnabled = false;
     	if (wasEnabledFlag) {
     		mLogger.writeLog();
+
     		wasEnabledFlag = false;
     		System.out.println("Wrote to file");
     	}
