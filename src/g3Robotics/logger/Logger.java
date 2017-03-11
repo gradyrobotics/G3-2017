@@ -9,11 +9,12 @@ import g3Robotics.subsystems.Shooter;
 
 public class Logger {
 	private static Logger instance = null;
-	private String path = "/U/ShooterData.csv";
+	private String path = "/media/sda1/ShooterData.txt";
 	private Shooter mShooter = Shooter.getInstance();
 	private StringBuilder outString;
 	private PrintWriter writer;
 	private long startTime;
+	public boolean isEnabled;
 	
 	public static Logger getInstance() {
 		if (instance == null) {
@@ -31,21 +32,27 @@ public class Logger {
 		}
 		outString = new StringBuilder();
 		outString.append("Time");
-		outString.append(',');
+		outString.append(", ");
 		outString.append("Data");
 		outString.append('\n');
 		startTime = System.currentTimeMillis();
 	}
 	
-	public void log(double input) {
-		outString.append(Long.toString(System.currentTimeMillis() - startTime));
-		outString.append(',');
-		outString.append(Double.toString(input));
+	public void log (){
+		outString.append(System.currentTimeMillis() - startTime);
+		outString.append(", ");
+		outString.append(mShooter.getSpeed());
 		outString.append('\n');
+		System.out.println(outString.toString());
+		writer.write(outString.toString());
+		writer.flush();
+		outString = new StringBuilder();
+		
 	}
 	
 	public void writeLog() {
 		writer.write(outString.toString());
+		writer.flush();
 		writer.close();
 	}
 }
