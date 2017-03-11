@@ -25,7 +25,7 @@ public class Robot extends IterativeRobot {
     String autoSelected;
     //SendableChooser chooser;
 	
-   // Vision mVision;
+    Vision mVision;
     Shooter mShooter;
     Drive mDrive;
     OI mOI;
@@ -47,7 +47,6 @@ public class Robot extends IterativeRobot {
     
     public void robotInit() {
     	
-    	
     	mDrive = Drive.getInstance();
     	mOI = OI.getInstance();
     	mShooter = Shooter.getInstance();
@@ -56,9 +55,9 @@ public class Robot extends IterativeRobot {
     	mDrive.calibrate();
     	mDrive.reset();
     	
-//    	mVision = Vision.getInstance();
-//        mVision.VisionInit();
-//        mVision.findTarget();
+    	mVision = Vision.getInstance();
+        mVision.VisionInit();
+        mVision.findTarget();
         
         mPropertyReader = new PropertyReader();
         mProperties = PropertySet.getInstance();
@@ -73,7 +72,7 @@ public class Robot extends IterativeRobot {
      */
     public void disabledPeriodic() {
     	logToDashboard();
-    	//mVision.findTarget();
+    	mVision.findTarget();
 //    	
 		if(mOI.driverGamepad.getYButton() && !mLastIterationButtonState)
     	{
@@ -100,10 +99,14 @@ public class Robot extends IterativeRobot {
     }
     
     public void disabledInit() {
+    	mLogger.isEnabled = false;
     	if (wasEnabledFlag) {
     		mLogger.writeLog();
-		wasEnabledFlag = false;
+
+    		wasEnabledFlag = false;
+    		System.out.println("Wrote to file");
     	}
+    	
     }
     
     public void autonomousInit() {
@@ -173,7 +176,14 @@ public class Robot extends IterativeRobot {
     				mDrive.brake();
     			default: 
     				mDrive.brake();
-    		} // end switch
+    		}
+    	} else if (autonomousName.equals("Hopper and Shoot Bloo")) {
+    		if (timer.get() < 6.0) {
+    			mDrive.driveSpeedTurn(0.8, -0.05 * mDrive.getGyroAngle());
+    		} else {
+    			mDrive.brake();
+    			timer.stop();
+    		}// end switch
 //    	} else if (autonomousName.equals("Hopper and Shoot Bloo")){
 //    		switch(autoStepNumber) {
 //    			case 1:
@@ -355,6 +365,10 @@ public class Robot extends IterativeRobot {
     			break;
     	}
     }
+    
+    public void teleopInit() {
+    	mLogger.isEnabled = true;
+    }
 
     /**
      * This function is called periodically during operator control
@@ -363,8 +377,11 @@ public class Robot extends IterativeRobot {
     	wasEnabledFlag = true;
         mOI.processInputs();
         logToDashboard();
-        mLogger.log(mShooter.getSpeed());
-        //mVision.findTarget();
+        
+        mVision.findTarget();
+        if(mLogger.isEnabled) {
+        	mLogger.log();
+        }
     }
     
     /**
@@ -379,11 +396,11 @@ public class Robot extends IterativeRobot {
     }
     
     public void logToDashboard() {
-//    	SmartDashboard.putNumber("X Offset from Target", mVision.getXOffset());
-//    	SmartDashboard.putNumber("Y Offset from Target", mVision.getYOffset());
-//    	SmartDashboard.putNumber("X Center:", mVision.getCenterX());
-//    	SmartDashboard.putNumber("Y Center:", mVision.getCenterY());
-//    	SmartDashboard.putBoolean("Target found?", mVision.isTargetFound());
+    	SmartDashboard.putNumber("X Offset from Target", mVision.getXOffset());
+    	SmartDashboard.putNumber("Y Offset from Target", mVision.getYOffset());
+    	SmartDashboard.putNumber("X Center:", mVision.getCenterX());
+    	SmartDashboard.putNumber("Y Center:", mVision.getCenterY());
+    	SmartDashboard.putBoolean("Target found?", mVision.isTargetFound());
     	SmartDashboard.putNumber("Left Encoder Distance: ", mDrive.getLeftDistance());
     	SmartDashboard.putNumber("Right Encoder Distance: ", mDrive.getRightDistance());
     	SmartDashboard.putNumber("Left Encoder Speed: ", mDrive.getLeftSpeed());
@@ -393,7 +410,7 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Speed", mShooter.getSpeed());
     	SmartDashboard.putBoolean("Is shooter ready?", mShooter.isTargetSpeed());
     	SmartDashboard.putBoolean("Is drive inverted?", mDrive.isInverted());
-    	//SmartDashboard.putNumber("Yaw Angle From Target: ", mVision.getYawAngleTarget());
+    	SmartDashboard.putNumber("Yaw Angle From Target: ", mVision.getYawAngleTarget());
     	
     }
     

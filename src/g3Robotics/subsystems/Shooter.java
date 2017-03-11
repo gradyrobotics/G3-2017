@@ -46,7 +46,7 @@ public class Shooter extends G3Subsystem {
 			shooterMotors.set(highMotorPower);
 		else
 			shooterMotors.set(lowMotorPower);
-		wheelSpeed = targetSpeed;
+		targetSpeed = wheelSpeed;
 	}
 	
 	public void setPWheels(double setpoint){
@@ -90,7 +90,7 @@ public class Shooter extends G3Subsystem {
     }
     
     public boolean isTargetSpeed(){
-    	return (targetSpeed > 2750 && targetSpeed < 2850);
+    	return (getSpeed() > (targetSpeed - 30) && getSpeed() < (targetSpeed + 30));
     }
     
 }

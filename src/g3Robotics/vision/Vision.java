@@ -82,7 +82,7 @@ public class Vision {
     }
     
     public boolean isTargetFound(){
-    	if (Math.abs(xOffset) < 2){
+    	if (Math.abs(xOffset) < 4){
     		return true;
     	}
     	else
