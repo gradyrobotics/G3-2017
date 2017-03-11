@@ -11,6 +11,7 @@ public class Logger {
 	private static Logger instance = null;
 	private String path = "/media/sda1/ShooterData.txt";
 	private Shooter mShooter = Shooter.getInstance();
+	private Drive mDrifev = Drive.getInstance();
 	private StringBuilder outString;
 	private PrintWriter writer;
 	private long startTime;
@@ -33,7 +34,9 @@ public class Logger {
 		outString = new StringBuilder();
 		outString.append("Time");
 		outString.append(", ");
-		outString.append("Data");
+		outString.append("Shooter Speed");
+		outString.append(", ");
+		outString.append("PDP Current");
 		outString.append('\n');
 		startTime = System.currentTimeMillis();
 	}
@@ -42,16 +45,18 @@ public class Logger {
 		outString.append(System.currentTimeMillis() - startTime);
 		outString.append(", ");
 		outString.append(mShooter.getSpeed());
+		outString.append(", ");
+		outString.append(mDrive.getTotalCurrent());
 		outString.append('\n');
 		System.out.println(outString.toString());
-		writer.write(outString.toString());
+		writer.print(outString.toString());
 		writer.flush();
 		outString = new StringBuilder();
 		
 	}
 	
 	public void writeLog() {
-		writer.write(outString.toString());
+		writer.print(outString.toString());
 		writer.flush();
 		writer.close();
 	}
