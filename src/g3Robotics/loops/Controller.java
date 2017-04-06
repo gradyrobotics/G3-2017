@@ -10,7 +10,8 @@ package g3Robotics.loops;
  */
 public interface Controller extends Runnable
 {
-    public void reset();
-    public boolean onTarget();
-    public void loadProperties();
+	public void reset();
+	public void loadProperties();
+	public void enable();
+	public void disable();
 }

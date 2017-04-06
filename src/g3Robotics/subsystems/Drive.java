@@ -4,6 +4,7 @@ import g3Robotics.Constants;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import g3Robotics.vision.Vision;
 
 /**
  * The robot drive base.
@@ -27,12 +28,8 @@ public class Drive extends G3Subsystem
     private PowerDistributionPanel pdp;
     private ADXRS450_Gyro gyro;
 	public DoubleSolenoid platePiston;
-	
+	private Timer lineUpTimer;
 
-    //private Gyro gyro;
-    
-
-    
     //Variables
     private double leftDistance = 0;
     private double rightDistance = 0;
@@ -43,20 +40,25 @@ public class Drive extends G3Subsystem
     private boolean areLightsOn = false;
     private boolean isPlateUp = false;
     private boolean isInverted = false;
+    private boolean openLoop = true;
     private double gyroZero = 0.0;
-
+    private boolean isLineUpTimeSet = false;
+    private double lineUpTime = 0.0;
+    private boolean liningUpState = false;
+    
     private static Drive instance = null;
+    Vision mVision;
 
     private Drive()
     {
+    	mVision = Vision.getInstance();
+    	
         leftMotor1 = new VictorSP(Constants.leftDrivePWM);
         rightMotor1 = new VictorSP(Constants.rightDrivePWM);
         shifter = new DoubleSolenoid(Constants.shifterSolenoid_1, Constants.shifterSolenoid_2);
         lights = new Relay(Constants.lightRelay);
         
         pdp = new PowerDistributionPanel();
-        
-        
         
         double encoderScalingFactor = (Constants.WheelSizeIn*Math.PI)/128; //CHECK THIS
         leftEncoder = new Encoder(Constants.leftDriveDI2, Constants.leftDriveDI1);
@@ -65,12 +67,11 @@ public class Drive extends G3Subsystem
         rightEncoder.setDistancePerPulse(-encoderScalingFactor);
 
         gyro = new ADXRS450_Gyro();
-        
+        lineUpTimer = new Timer();
+        lineUpTimer.start();
 		platePiston = new DoubleSolenoid(Constants.humanPlayerPlateSolenoid_1, Constants.humanPlayerPlateSolenoid_2);
-
-
-        
-        lowGear();
+		
+		lowGear();
         
     }
     
@@ -108,6 +109,19 @@ public class Drive extends G3Subsystem
     	right = -speed - turn;
     	
         set(left, right);
+    }
+    
+    
+    public void lineUpGoal(){
+    	if(mVision.getXOffset() > 3){
+    		driveSpeedTurn(0.0, 0.05 * mVision.getXOffset());
+    	}
+    	else if(mVision.getXOffset() < -3){
+    		driveSpeedTurn(0.0, 0.05 * mVision.getXOffset());
+    	}
+    	else{
+    		liningUpState = false;
+    	}
     }
 
     public void driveLeftRight(double left, double right)
@@ -223,7 +237,7 @@ public class Drive extends G3Subsystem
         leftDistance =  0;
         rightDistance = 0;
         lastLeftDistance = 0; 
-        lastRightDistance = 0;
+        lastRightDistance = 0;	
     }
     
     public synchronized void runOutputFilters()
@@ -241,12 +255,13 @@ public class Drive extends G3Subsystem
     public void lightsOn()
     { 
     	lights.set(Relay.Value.kForward);
+    			
     	areLightsOn = true;
     }
     
     public void lightsOff()
     {
-    	lights.set(Relay.Value.kReverse);
+    	lights.set(Relay.Value.kOff);
     	areLightsOn = false; 
     }
 //    
@@ -268,10 +283,6 @@ public class Drive extends G3Subsystem
 		return isPlateUp;
 	}
     
-    public void lineUpGoal(){
-    	
-    }
-    
     public boolean getLightState()
     {
     	return areLightsOn;
@@ -289,8 +300,26 @@ public class Drive extends G3Subsystem
     	return isInverted;
     }
     
+    public boolean isLiningUp(){
+    	liningUpState = mVision.isTargetFound();
+    	return liningUpState;
+    }
+    
+    public void setLiningUp(boolean input){
+    	liningUpState = input;
+    }
+    
+    
     public void invert() {
     	isInverted = !isInverted;
+    }
+    
+    public void setOpenLoop(boolean input){
+    	openLoop = input;
+    }
+    
+    public boolean isOpenLoop(){
+    	return openLoop;
     }
 
 }
