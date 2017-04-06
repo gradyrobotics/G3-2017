@@ -57,7 +57,6 @@ public class DriveDistance implements Controller
         return mFollower.isFinishedTrajectory();// && mFollower.onTarget(distanceThreshold);
     }
 
-    
 
     public void run() 
     {
@@ -82,5 +81,19 @@ public class DriveDistance implements Controller
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void enable() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void disable() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
     
 }

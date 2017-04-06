@@ -44,7 +44,7 @@ public class Drive extends G3Subsystem
     private double gyroZero = 0.0;
     private boolean isLineUpTimeSet = false;
     private double lineUpTime = 0.0;
-    private boolean lineUpState = false;
+    private boolean liningUpState = false;
     
     private static Drive instance = null;
     Vision mVision;
@@ -111,17 +111,16 @@ public class Drive extends G3Subsystem
         set(left, right);
     }
     
+    
     public void lineUpGoal(){
-    	if(mVision.getXOffset() > 4){
-    		lineUpState = true;
-    		driveSpeedTurn(0.0, 0.8 * mVision.getXOffset());
+    	if(mVision.getXOffset() > 3){
+    		driveSpeedTurn(0.0, 0.05 * mVision.getXOffset());
     	}
-    	else if(mVision.getXOffset() < -4){
-    		lineUpState = true;
-    		driveSpeedTurn(0.0, -0.8 * mVision.getXOffset());
+    	else if(mVision.getXOffset() < -3){
+    		driveSpeedTurn(0.0, 0.05 * mVision.getXOffset());
     	}
     	else{
-    		lineUpState = false;
+    		liningUpState = false;
     	}
     }
 
@@ -256,12 +255,13 @@ public class Drive extends G3Subsystem
     public void lightsOn()
     { 
     	lights.set(Relay.Value.kForward);
+    			
     	areLightsOn = true;
     }
     
     public void lightsOff()
     {
-    	lights.set(Relay.Value.kReverse);
+    	lights.set(Relay.Value.kOff);
     	areLightsOn = false; 
     }
 //    
@@ -300,12 +300,13 @@ public class Drive extends G3Subsystem
     	return isInverted;
     }
     
-    public boolean isLinedUp(){
-    	return lineUpState;
+    public boolean isLiningUp(){
+    	liningUpState = mVision.isTargetFound();
+    	return liningUpState;
     }
     
     public void setLiningUp(boolean input){
-    	lineUpState = input;
+    	liningUpState = input;
     }
     
     

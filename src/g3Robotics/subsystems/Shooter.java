@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.*;
 
 public class Shooter extends G3Subsystem {
 	private final VictorSP shooterMotors;
+	private final VictorSP shooterMotors2;
 	private final VictorSP shooterTransport;
 	private final VictorSP cyclone;
 	private final VictorSP ballPath;
@@ -15,6 +16,7 @@ public class Shooter extends G3Subsystem {
 	
 	private Counter counter;
 	private double mSetpoint;
+	private boolean isTargetSpeed;
 	
 	private static Shooter instance = null;
 	private VelocityPID wheelController;
@@ -24,6 +26,7 @@ public class Shooter extends G3Subsystem {
 		counter = new Counter(Constants.bannerSensorPWM);
 
 		shooterMotors = new VictorSP(Constants.shooterMotorsPWM);
+		shooterMotors2 = new VictorSP(Constants.intakeMotorPWM);
 		shooterTransport = new VictorSP(Constants.shooterTransportPWM);
 		cyclone = new VictorSP(Constants.cycloneMotorPWM);
 		ballPath = new VictorSP(Constants.ballPathMotorPWM);
@@ -42,22 +45,29 @@ public class Shooter extends G3Subsystem {
 
 	
 	public void setWheels(double wheelSpeed, double lowMotorPower, double highMotorPower){
-		if (getSpeed() < wheelSpeed)
-			shooterMotors.set(highMotorPower);
-		else
-			shooterMotors.set(lowMotorPower);
+		if (getSpeed() < wheelSpeed){
+			shooterMotors.set(-highMotorPower);
+			shooterMotors2.set(highMotorPower);
+		}
+		else{
+			shooterMotors.set(-lowMotorPower);
+			shooterMotors2.set(lowMotorPower);
+		}
 		targetSpeed = wheelSpeed;
+		
 	}
 	
 	public void setPWheels(double setpoint){
 		mSetpoint = setpoint;
 		wheelController.setSetpoint(mSetpoint);
 		shooterMotors.set(wheelController.calculate(getSpeed()));
+		
 	}
 	
 	public void setConstantWheels(double speed)
 	{
-		shooterMotors.set(speed);
+		shooterMotors2.set(speed);
+		shooterMotors.set(-speed);
 	}
 	public void setTransport(double speed){
 		shooterTransport.set(speed);
@@ -76,7 +86,7 @@ public class Shooter extends G3Subsystem {
 	}
 	
 	public void setSmallAngle(){
-		shooterHood.set(DoubleSolenoid.Value.kOff);
+		shooterHood.set(DoubleSolenoid.Value.kReverse);
 	}
 	
 	public void brake(){
@@ -90,7 +100,12 @@ public class Shooter extends G3Subsystem {
     }
     
     public boolean isTargetSpeed(){
-    	return (getSpeed() > (targetSpeed - 30) && getSpeed() < (targetSpeed + 30));
+    	if (getSpeed() >= targetSpeed && getSpeed() < targetSpeed + 50){
+    		isTargetSpeed = true;
+    	} else{
+    		isTargetSpeed = false;
+    	}
+    	return isTargetSpeed;
     }
     
 }

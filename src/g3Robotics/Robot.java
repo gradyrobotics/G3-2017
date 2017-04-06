@@ -9,6 +9,9 @@ import g3Robotics.fileio.*;
 import g3Robotics.logger.Logger;
 import g3Robotics.vision.*;
 import g3Robotics.subsystems.*;
+import g3Robotics.loops.*;
+import g3Robotics.paths.*;
+import g3Robotics.trajectorylib.*;
 import g3Robotics.utilities.XboxController;
 
 /**
@@ -30,9 +33,12 @@ public class Robot extends IterativeRobot {
     Drive mDrive;
     OI mOI;
     Logger mLogger;
+    TrajectoryDriveController mDrivebaseController;
     
     PropertyReader mPropertyReader;
     PropertySet mProperties;
+    Path testPath;
+    double heading;
     
     String autonomousName = "";
     
@@ -49,8 +55,10 @@ public class Robot extends IterativeRobot {
     	
     	mDrive = Drive.getInstance();
     	mOI = OI.getInstance();
-    	mShooter = Shooter.getInstance();
+    	mShooter = Shooter.getInstance();	
     	mLogger = Logger.getInstance();
+    	//mVision = Vision.getInstance();
+    	mDrivebaseController = new TrajectoryDriveController();
     	
     	mDrive.calibrate();
     	mDrive.reset();
@@ -72,14 +80,14 @@ public class Robot extends IterativeRobot {
      */
     public void disabledPeriodic() {
     	logToDashboard();
-    	mVision.findTarget();
-//    	
+    	//mVision.findTarget();
+    	
 		if(mOI.driverGamepad.getYButton() && !mLastIterationButtonState)
     	{
     		buttonCounter++;
     		readAutoMode(buttonCounter);
     		
-	    	if(buttonCounter > 4)
+	    	if(buttonCounter > 5)
 	    	{
 	    		buttonCounter = 0;
 	    	}
@@ -99,13 +107,13 @@ public class Robot extends IterativeRobot {
     }
     
     public void disabledInit() {
-    	mLogger.isEnabled = false;
-    	if (wasEnabledFlag) {
-    		mLogger.writeLog();
-
-    		wasEnabledFlag = false;
-    		System.out.println("Wrote to file");
-    	}
+    	//mLogger.isEnabled = false;
+//    	if (wasEnabledFlag) {
+//    		mLogger.writeLog();
+//
+//    		wasEnabledFlag = false;
+//    		System.out.println("Wrote to file");
+//    	}
     	
     }
     
@@ -113,7 +121,7 @@ public class Robot extends IterativeRobot {
     	timer.start();
     	mDrive.reset();
     	timer.reset();
-    	mDrive.zeroGyro();
+    	mDrive.zeroGyro();	
     	autoStepNumber = 1;
     	//wasEnabledFlag = true;
     	
@@ -126,6 +134,7 @@ public class Robot extends IterativeRobot {
     public void autonomousPeriodic() {
     	//mAutonomousStateMachine.run();
     	//timer.start();
+    	logToDashboard();
     	if(autonomousName.equals("Drive Forward")) {
 	    	if(timer.get() < 4.0){
 	    		mDrive.driveSpeedTurn(1.0, 0.0);
@@ -134,9 +143,103 @@ public class Robot extends IterativeRobot {
 	    		mDrive.driveSpeedTurn(0.0, 0.0);
 	    		timer.stop();
 	    	}
-    	} else if (autonomousName.equals("Gear Middle")) {
+    	} else if(autonomousName.equals("Trajectory Test")){
+    		mDrive.reset();
+    		testPath = LoadAutoPaths.get("TestPath");
+    	    mDrivebaseController.loadProfile(testPath.getLeftWheelTrajectory(), testPath.getRightWheelTrajectory(), 1.0, heading);
+    	    mDrivebaseController.enable();
+    	    if(mDrivebaseController.isEnabled())
+    	    	mDrivebaseController.run();
+    	    else
+    	    	mDrive.brake();
+    	}
+    	else if (autonomousName.equals("Shoot Balls Everywhere")){
+    		switch(autoStepNumber) {
+    		case 1:
+    			if (mShooter.getSpeed() < 3100){
+    				mShooter.setWheels(3100, 0.0, -1.0);
+    			}
+    			else{
+    				timer.reset();
+    				autoStepNumber++;
+    			}
+    			break;
+    		case 2:
+    			if (timer.get() < 0.5 && timer.get() > 0.0){
+    				mShooter.setWheels(3100, 0.0, 1.0);
+    				mShooter.setBallPath(0.8);
+    				mShooter.setCyclone(0.5);
+    				mShooter.setTransport(-0.8);
+    			}
+    			else if (timer.get() < 1.25 && timer.get() > 0.5){
+    				mShooter.brake();
+    			}
+    			else if (timer.get() < 1.75 && timer.get() > 1.25){
+    				mShooter.setWheels(3100, 0.0, 1.0);
+    				mShooter.setBallPath(0.8);
+					mShooter.setCyclone(0.5);
+					mShooter.setTransport(-0.8);
+    			}
+    			else if (timer.get() < 2.5 && timer.get() > 1.75){
+    				mShooter.brake();
+    			}
+    			else if (timer.get() < 3.0 && timer.get() > 2.5){
+    				mShooter.setWheels(3100, 0.0, 1.0);
+    				mShooter.setBallPath(0.8);
+					mShooter.setCyclone(0.5);
+					mShooter.setTransport(-0.8);
+    			}
+    			else if (timer.get() < 3.75 && timer.get() > 3.0){
+    				mShooter.brake();
+    			}
+    			else if (timer.get() < 4.25 && timer.get() > 3.75){
+    				mShooter.setWheels(3100, 0.0, 1.0);
+    				mShooter.setBallPath(0.8);
+					mShooter.setCyclone(0.5);
+					mShooter.setTransport(-0.8);
+    			}
+    			else if (timer.get() < 5.0 && timer.get() > 4.25){
+    				mShooter.brake();
+    			}
+    			else if (timer.get() < 5.5 && timer.get() > 5.0){
+					mShooter.setBallPath(0.8);
+					mShooter.setCyclone(0.5);
+					mShooter.setTransport(-0.8);
+    			}
+    			else if (timer.get() < 6.25 && timer.get() > 5.5){
+    				mShooter.brake();
+    			}
+    			else if (timer.get() < 6.75 && timer.get() > 6.25){
+					mShooter.setBallPath(0.8);
+					mShooter.setCyclone(0.5);
+					mShooter.setTransport(-0.8);
+    			}
+    			else if (timer.get() < 7.0 && timer.get() > 6.75){
+    				mShooter.brake();
+    			}
+    			else {
+    				mShooter.brake();
+    				mShooter.setWheels(0.0, 0.0, 0.0);
+    				mDrive.reset();
+    				autoStepNumber++;
+    			}
+    			break;
+    		case 3:
+    			if (timer.get() < 9.0){
+    				mDrive.driveSpeedTurn(0.8, 0.0);
+    			}
+    			else {
+    				mDrive.driveSpeedTurn(0.0, 0.0);
+    				timer.stop();
+    			}
+    			break;
+    		default:
+    			mDrive.brake();
+    		}
+    	}
+    	else if (autonomousName.equals("Gear Middle")) {
     		if (timer.get() < 6.0) {
-    			mDrive.driveSpeedTurn(0.8, -0.05 * mDrive.getGyroAngle());
+    			mDrive.driveSpeedTurn(0.8, 0.0);
     		} else {
     			mDrive.brake();
     			timer.stop();
@@ -144,7 +247,7 @@ public class Robot extends IterativeRobot {
     	} else if(autonomousName.equals("Gear Left Side")) {
     		switch(autoStepNumber) {
     			case 1: 
-    				if(Math.abs(mDrive.getRightDistance()) <= 36) {
+    				if(Math.abs(mDrive.getRightDistance()) <= 31) {
     					mDrive.driveSpeedTurn(1.0, 0.0);
     				} else {
     					mDrive.brake();
@@ -177,7 +280,7 @@ public class Robot extends IterativeRobot {
     			default: 
     				mDrive.brake();
     		}
-    	} else if (autonomousName.equals("Hopper and Shoot Bloo")) {
+    	} else if (autonomousName.equals("Hopper and Shoot Red")) {
     		if (timer.get() < 6.0) {
     			mDrive.driveSpeedTurn(0.8, -0.05 * mDrive.getGyroAngle());
     		} else {
@@ -357,11 +460,14 @@ public class Robot extends IterativeRobot {
 	    		autonomousName = "Gear Right Side";
 	    		break;
 	    	case 5:
-	    		autonomousName = "Hopper and Shoot Bloo";
+	    		autonomousName = "Shoot Balls Everywhere";
+	    		break;
+	    	case 6:
+	    		autonomousName = "Trajectory Test";
 	    		break;
     		default:
     			//mPropertyReader.parseAutonomousFile("/home/lvuser/DoNothing.txt");
-    			autonomousName = "Do Nothing";
+    			autonomousName = "Gear Middle";
     			break;
     	}
     }
@@ -378,10 +484,10 @@ public class Robot extends IterativeRobot {
         mOI.processInputs();
         logToDashboard();
         
-        mVision.findTarget();
-        if(mLogger.isEnabled) {
-        	mLogger.log();
-        }
+        //mVision.findTarget();
+//        if(mLogger.isEnabled) {
+//        	mLogger.log();
+//        }
     }
     
     /**
@@ -407,6 +513,7 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Right Encoder Speed: ", mDrive.getRightSpeed());
     	SmartDashboard.putNumber("Gyro: ", mDrive.getGyroAngle());
     	SmartDashboard.putString("Auto mode: ", autonomousName);
+    	SmartDashboard.putNumber("Speed Command", mOI.getSpeedCommand());
     	SmartDashboard.putNumber("Speed", mShooter.getSpeed());
     	SmartDashboard.putBoolean("Is shooter ready?", mShooter.isTargetSpeed());
     	SmartDashboard.putBoolean("Is drive inverted?", mDrive.isInverted());
