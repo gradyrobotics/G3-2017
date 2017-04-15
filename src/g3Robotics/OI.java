@@ -221,8 +221,8 @@ public class OI
 		{
 			if(mShooter.isTargetSpeed()){
 				mShooter.setBallPath(0.8);
-				mShooter.setCyclone(0.5);
-				mShooter.setTransport(-1.0);
+				mShooter.setCyclone(-0.5);
+				mShooter.setTransport(1.0);
 			}
 		}
 		else
