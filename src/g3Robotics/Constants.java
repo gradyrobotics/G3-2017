@@ -13,6 +13,7 @@ public class Constants {
 	public static final int climberMotorPWM = 9;
 	
 	public static final int shooterMotorsPWM = 3;
+	public static final int shooterMotorsPWM_2 = 2;
 	public static final int shooterTransportPWM = 5;
 	public static final int cycloneMotorPWM = 4;
 	public static final int ballPathMotorPWM = 6;

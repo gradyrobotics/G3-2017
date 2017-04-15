@@ -87,7 +87,7 @@ public class Robot extends IterativeRobot {
     		buttonCounter++;
     		readAutoMode(buttonCounter);
     		
-	    	if(buttonCounter > 5)
+	    	if(buttonCounter > 8)
 	    	{
 	    		buttonCounter = 0;
 	    	}
@@ -152,12 +152,11 @@ public class Robot extends IterativeRobot {
     	    	mDrivebaseController.run();
     	    else
     	    	mDrive.brake();
-    	}
-    	else if (autonomousName.equals("Shoot Balls Everywhere")){
+    	} else if (autonomousName.equals("Ten Balls Blue")){
     		switch(autoStepNumber) {
     		case 1:
-    			if (mShooter.getSpeed() < 3100){
-    				mShooter.setWheels(3100, 0.0, -1.0);
+    			if (mShooter.getSpeed() < 3250){
+    				mShooter.setWheels(3200, 0.0, 1.0);
     			}
     			else{
     				timer.reset();
@@ -165,72 +164,205 @@ public class Robot extends IterativeRobot {
     			}
     			break;
     		case 2:
-    			if (timer.get() < 0.5 && timer.get() > 0.0){
+    			if (timer.get() < 3.0){
+    				mShooter.setWheels(3250, 0.0, 1.0);
+    				mShooter.setBallPath(0.8);
+    				mShooter.setCyclone(0.5);
+    				mShooter.setTransport(-1.0);
+    			}
+    			else{
+    				timer.reset();
+    				autoStepNumber++;
+    			}
+    			break;
+    		case 3:
+    			if (timer.get() < 0.5 && timer.get() >= 0.0){
+    				mShooter.setWheels(3250, 0.0, 1.0);
+    				mShooter.setBallPath(0.8);
+    				mShooter.setCyclone(0.5);
+    				mShooter.setTransport(-0.8);
+    			}
+    			else if (timer.get() < 1.25 && timer.get() >= 0.5){
+    				mShooter.brake();
+    			}
+    			else if (timer.get() < 1.75 && timer.get() >= 1.25){
+    				mShooter.setWheels(3250, 0.0, 1.0);
+    				mShooter.setBallPath(0.8);
+					mShooter.setCyclone(0.5);
+					mShooter.setTransport(-0.8);
+    			}
+    			else if (timer.get() < 2.5 && timer.get() >= 1.75){
+    				mShooter.brake();
+    			}
+    			else if (timer.get() < 3.0 && timer.get() >= 2.5){
+    				mShooter.setWheels(3250, 0.0, 1.0);
+    				mShooter.setBallPath(0.8);
+					mShooter.setCyclone(0.5);
+					mShooter.setTransport(-0.8);
+    			}
+    			else if (timer.get() < 3.75 && timer.get() >= 3.0){
+    				mShooter.brake();
+    			}
+    			else if (timer.get() < 4.25 && timer.get() >= 3.75){
+    				mShooter.setWheels(3250, 0.0, 1.0);
+    				mShooter.setBallPath(0.8);
+					mShooter.setCyclone(0.5);
+					mShooter.setTransport(-0.8);
+    			}
+    			else if (timer.get() < 5.0 && timer.get() >= 4.25){
+    				mShooter.brake();
+    			}
+    			else if (timer.get() < 5.5 && timer.get() >= 5.0){
+    				mShooter.setWheels(3250, 0.0, 1.0);
+					mShooter.setBallPath(0.8);
+					mShooter.setCyclone(0.5);
+					mShooter.setTransport(-0.8);
+    			}
+    			else if (timer.get() < 6.25 && timer.get() >= 5.5){
+    				mShooter.brake();
+    			}
+    			else if (timer.get() < 6.75 && timer.get() >= 6.25){
+    				mShooter.setWheels(3250, 0.0, 1.0);
+					mShooter.setBallPath(0.8);
+					mShooter.setCyclone(0.5);
+					mShooter.setTransport(-0.8);
+    			}
+    			else if (timer.get() < 7.0 && timer.get() >= 6.75){
+    				mShooter.brake();
+    			}
+    			else if (timer.get() >= 7.0){
+    				mShooter.brake();
+    				mShooter.setWheels(0.0, 0.0, 0.0);
+    				mDrive.reset();
+    				timer.reset();
+    				autoStepNumber++;
+    			}
+    			break;
+    		case 4:
+    			if(Math.abs(mDrive.getGyroAngle()) < 90){
+    				mDrive.driveSpeedTurn(0.0, -0.8);
+    			}
+    			else{
+    				System.out.println("Finished turning step.");
+    				mDrive.brake();
+    				mDrive.reset();
+    				timer.reset();
+    				autoStepNumber++;
+    			}
+    			break;
+    		case 5:
+    			if (timer.get() < 2.0){
+    				System.out.println("In driving step.");
+    				mDrive.driveSpeedTurn(1.0, 0.0);
+    			}
+    			else{
+    				mDrive.brake();
+    				mDrive.reset();
+    				timer.reset();
+    				autoStepNumber++;
+    			}
+    			break;
+    		default:
+    			mDrive.brake();
+    		}
+    	}
+    	else if (autonomousName.equals("Ten Balls Red")){
+    		System.out.print(timer.get());
+    		switch(autoStepNumber) {
+    		case 1:
+    			if (mShooter.getSpeed() < 3100){
+    				mShooter.setWheels(3100, 0.0, 1.0);
+    			}
+    			else{
+    				timer.reset();
+    				autoStepNumber++;
+    			}
+    			break;
+    		case 2:
+    			if (timer.get() < 3.0){
+    				mShooter.setWheels(3100, 0.0, 1.0);
+    				mShooter.setBallPath(0.8);
+    				mShooter.setCyclone(0.5);
+    				mShooter.setTransport(-1.0);
+    			}
+    			else{
+    				timer.reset();
+    				autoStepNumber++;
+    			}
+    			break;
+    		case 3:
+    			if (timer.get() < 0.5 && timer.get() >= 0.0){
     				mShooter.setWheels(3100, 0.0, 1.0);
     				mShooter.setBallPath(0.8);
     				mShooter.setCyclone(0.5);
     				mShooter.setTransport(-0.8);
     			}
-    			else if (timer.get() < 1.25 && timer.get() > 0.5){
+    			else if (timer.get() < 1.25 && timer.get() >= 0.5){
     				mShooter.brake();
     			}
-    			else if (timer.get() < 1.75 && timer.get() > 1.25){
+    			else if (timer.get() < 1.75 && timer.get() >= 1.25){
     				mShooter.setWheels(3100, 0.0, 1.0);
     				mShooter.setBallPath(0.8);
 					mShooter.setCyclone(0.5);
 					mShooter.setTransport(-0.8);
     			}
-    			else if (timer.get() < 2.5 && timer.get() > 1.75){
+    			else if (timer.get() < 2.5 && timer.get() >= 1.75){
     				mShooter.brake();
     			}
-    			else if (timer.get() < 3.0 && timer.get() > 2.5){
+    			else if (timer.get() < 3.0 && timer.get() >= 2.5){
     				mShooter.setWheels(3100, 0.0, 1.0);
     				mShooter.setBallPath(0.8);
 					mShooter.setCyclone(0.5);
 					mShooter.setTransport(-0.8);
     			}
-    			else if (timer.get() < 3.75 && timer.get() > 3.0){
+    			else if (timer.get() < 3.75 && timer.get() >= 3.0){
     				mShooter.brake();
     			}
-    			else if (timer.get() < 4.25 && timer.get() > 3.75){
+    			else if (timer.get() < 4.25 && timer.get() >= 3.75){
     				mShooter.setWheels(3100, 0.0, 1.0);
     				mShooter.setBallPath(0.8);
 					mShooter.setCyclone(0.5);
 					mShooter.setTransport(-0.8);
     			}
-    			else if (timer.get() < 5.0 && timer.get() > 4.25){
+    			else if (timer.get() < 5.0 && timer.get() >= 4.25){
     				mShooter.brake();
     			}
-    			else if (timer.get() < 5.5 && timer.get() > 5.0){
+    			else if (timer.get() < 5.5 && timer.get() >= 5.0){
 					mShooter.setBallPath(0.8);
 					mShooter.setCyclone(0.5);
 					mShooter.setTransport(-0.8);
     			}
-    			else if (timer.get() < 6.25 && timer.get() > 5.5){
+    			else if (timer.get() < 6.25 && timer.get() >= 5.5){
     				mShooter.brake();
     			}
-    			else if (timer.get() < 6.75 && timer.get() > 6.25){
+    			else if (timer.get() < 6.75 && timer.get() >= 6.25){
 					mShooter.setBallPath(0.8);
 					mShooter.setCyclone(0.5);
 					mShooter.setTransport(-0.8);
     			}
-    			else if (timer.get() < 7.0 && timer.get() > 6.75){
+    			else if (timer.get() < 7.0 && timer.get() >= 6.75){
     				mShooter.brake();
     			}
-    			else {
+    			else if (timer.get() >= 7.0) {
     				mShooter.brake();
     				mShooter.setWheels(0.0, 0.0, 0.0);
     				mDrive.reset();
+    				timer.reset();
+    				System.out.println("Finished shooter step.");
     				autoStepNumber++;
     			}
     			break;
-    		case 3:
-    			if (timer.get() < 9.0){
-    				mDrive.driveSpeedTurn(0.8, 0.0);
+    		case 4:
+    			System.out.println("Starting driving step.");
+    			if (timer.get() < 2.0){
+    				System.out.println("In driving step.");
+    				mDrive.driveSpeedTurn(1.0, 0.0);
     			}
     			else {
-    				mDrive.driveSpeedTurn(0.0, 0.0);
-    				timer.stop();
+    				mDrive.brake();
+    				System.out.println("Finished driving step.");
+    				mDrive.reset();
+    				autoStepNumber++;
     			}
     			break;
     		default:
@@ -238,16 +370,16 @@ public class Robot extends IterativeRobot {
     		}
     	}
     	else if (autonomousName.equals("Gear Middle")) {
-    		if (timer.get() < 6.0) {
-    			mDrive.driveSpeedTurn(0.8, 0.0);
+    		if (timer.get() < 4.0) {
+    			mDrive.driveSpeedTurn(0.8, -0.05 * mDrive.getGyroAngle());
     		} else {
     			mDrive.brake();
     			timer.stop();
     		}
-    	} else if(autonomousName.equals("Gear Left Side")) {
+    	} else if(autonomousName.equals("Gear Left Side Blue")) {
     		switch(autoStepNumber) {
     			case 1: 
-    				if(Math.abs(mDrive.getRightDistance()) <= 31) {
+    				if(Math.abs(mDrive.getLeftDistance()) <= 31) {
     					mDrive.driveSpeedTurn(1.0, 0.0);
     				} else {
     					mDrive.brake();
@@ -266,6 +398,76 @@ public class Robot extends IterativeRobot {
     				}
     				break;
     			case 3: 
+    				if(Math.abs(mDrive.getLeftDistance()) <= 60) {
+    					mDrive.driveSpeedTurn(1.0, 0.0);
+    				} else {
+    					mDrive.brake();
+    					mDrive.zeroGyro();
+    					mDrive.reset();
+    					autoStepNumber++;
+    				}
+    				break;
+    			case 4:
+    				mDrive.brake();
+    				break;
+    			default: 
+    				mDrive.brake();
+    		}
+    	} else if(autonomousName.equals("Gear Right Side Blue")) {
+    		switch(autoStepNumber) {
+				case 1: 
+					if(Math.abs(mDrive.getLeftDistance()) <= 70) {
+						mDrive.driveSpeedTurn(1.0, 0.0);
+					} else {
+						mDrive.brake();
+						mDrive.reset();
+						autoStepNumber++;
+					}
+					break;
+				case 2:
+					if(Math.abs(mDrive.getGyroAngle()) <= 45) {
+						mDrive.driveSpeedTurn(0.0, -0.8);
+					} else {
+						mDrive.brake();
+						autoStepNumber++;
+					}
+					break;
+				case 3: 
+					if(Math.abs(mDrive.getLeftDistance()) <= 34) {
+						mDrive.driveSpeedTurn(1.0, 0.0);
+					} else {
+						mDrive.brake();
+						autoStepNumber++;
+					}
+					break;
+				case 4:
+					mDrive.brake();
+					break;
+				default: 
+				
+    		}	
+    	} else if(autonomousName.equals("Gear Left Side Red")) {
+        	switch(autoStepNumber) {
+        		case 1: 
+        			if(Math.abs(mDrive.getAverageDistance()) <= 31) {
+        				mDrive.driveSpeedTurn(1.0, 0.0);
+        			} else {
+        				mDrive.brake();
+        				mDrive.reset();
+        				mDrive.zeroGyro();
+        				autoStepNumber++;
+        			}
+    				break;
+    			case 2:
+    				if(Math.abs(mDrive.getGyroAngle()) <= 42) {
+    					mDrive.driveSpeedTurn(0.0, 0.8);
+    				} else {
+    					mDrive.brake();
+    					mDrive.reset();
+    					autoStepNumber++;
+    				}
+    				break;
+        		case 3: 
     				if(Math.abs(mDrive.getAverageDistance()) <= 60) {
     					mDrive.driveSpeedTurn(1.0, 0.0);
     				} else {
@@ -277,131 +479,11 @@ public class Robot extends IterativeRobot {
     				break;
     			case 4:
     				mDrive.brake();
+    				break;
     			default: 
     				mDrive.brake();
     		}
-    	} else if (autonomousName.equals("Hopper and Shoot Red")) {
-    		if (timer.get() < 6.0) {
-    			mDrive.driveSpeedTurn(0.8, -0.05 * mDrive.getGyroAngle());
-    		} else {
-    			mDrive.brake();
-    			timer.stop();
-    		}// end switch
-//    	} else if (autonomousName.equals("Hopper and Shoot Bloo")){
-//    		switch(autoStepNumber) {
-//    			case 1:
-//    				mDrive.lowerPlate();
-//    				autoStepNumber++;
-//    				break;
-//    			case 2:
-//    				if(Math.abs(mDrive.getAverageDistance()) <= 65){
-//    					mDrive.driveSpeedTurn(-1.0, 0.0);
-//    				} else {
-//    					mDrive.brake();
-//    					mDrive.reset();
-//    					autoStepNumber++;
-//    				}
-//    				break;
-//    			case 3:
-//    				if(Math.abs(mDrive.getGyroAngle()) <= 90){
-//    					mDrive.driveSpeedTurn(0.0, -0.8);
-//    				} else{
-//    					mDrive.brake();
-//    					mDrive.reset();
-//    					autoStepNumber++;
-//    				}
-//    				break;
-//    			case 4:
-//    				if(Math.abs(mDrive.getAverageDistance()) <= 5.0){
-//    					mDrive.driveSpeedTurn(-1.0, 0.0);
-//    				} else{
-//    					mDrive.brake();
-//    					mDrive.reset();
-//        				timer.reset();
-//    					autoStepNumber++;
-//    				}
-//    				break;
-//    			case 5:
-//    				if(timer.get() < 2.5){
-//    					mDrive.brake();
-//    				} else {
-//    					autoStepNumber++;
-//    				}
-//    				break;
-//    			case 6:
-//    				if(Math.abs(mDrive.getAverageDistance()) <= 24){
-//    					mDrive.driveSpeedTurn(1.0, 0.0);
-//    				} else{
-//    					mDrive.brake();
-//    					mDrive.reset();
-//    					autoStepNumber++;
-//    				}
-//    				break;
-//    			case 7:
-//    				if(Math.abs(mDrive.getGyroAngle()) <= 90){
-//    					mDrive.driveSpeedTurn(0.0, 1.0);
-//    				} else{
-//    					mDrive.brake();
-//    					mDrive.reset();
-//    					autoStepNumber++;
-//    				}
-//    				break;
-//    			case 8:
-//    				if(Math.abs(mDrive.getAverageDistance()) <= 50){
-//    					mDrive.driveSpeedTurn(1.0, 0.0);
-//    				} else{
-//    					mDrive.brake();
-//    					mDrive.reset();
-//    					autoStepNumber++;
-//    				}
-//    				break;
-//    			case 9:
-//    				if(Math.abs(mDrive.getGyroAngle()) <= 25){
-//    					mDrive.driveSpeedTurn(0.0, -0.8);
-//    				} else {
-//    					mDrive.brake();
-//    					mDrive.reset();
-//    					autoStepNumber++;
-//    				}
-//    				break;
-//    			case 10:
-//    				if(mVision.getXOffset() > 0 && !mVision.isTargetFound()){
-//    					mDrive.driveSpeedTurn(0.0, -0.7);
-//    				}
-//    				else if(mVision.getXOffset() < 0 && !mVision.isTargetFound()){
-//    					mDrive.driveSpeedTurn(0.0, 0.7);
-//    				} else{
-//    					mDrive.brake();
-//    					mDrive.reset();
-//    					timer.reset();
-//    					autoStepNumber++;
-//    				}
-//    				break;
-//    			case 11:
-//    				if(timer.get() <= 2.0){
-//    					mShooter.setWheels(3600, 0.0, 1.0);
-//    				}
-//    				else {
-//    					timer.reset();
-//    					autoStepNumber++;
-//    				}
-//    				break;
-//    			case 12:
-//    				if(timer.get() < 4.0){
-//    					mShooter.setCyclone(0.6);
-//    					mShooter.setBallPath(1.0);
-//    					mShooter.setTransport(-1.0);
-//    				}
-//    				else{
-//    					mShooter.brake();
-//    					mShooter.setWheels(0.0, 0.0, 0.0);
-//    				}
-//    				break;
-//    			default:
-//    				mDrive.brake();
-//    				mShooter.brake();
-//    			}
-    	} else if(autonomousName.equals("Gear Right Side")) {
+    	} else if(autonomousName.equals("Gear Right Side Red")) {
     		switch(autoStepNumber) {
 				case 1: 
 					if(Math.abs(mDrive.getAverageDistance()) <= 70) {
@@ -429,11 +511,11 @@ public class Robot extends IterativeRobot {
 					break;
 				case 4:
 					mDrive.brake();
+					break;
 				default: 
 					mDrive.brake();
-    		}//end switch
-    		
-    	}
+    		}	
+    	} 
     
     	logToDashboard();
     }
@@ -453,17 +535,26 @@ public class Robot extends IterativeRobot {
 	    		break;
 	    	case 3:
 	    		//mPropertyReader.parseAutonomousFile("home/lvuser/GearLeftSide.txt");
-	    		autonomousName = "Gear Left Side";
+	    		autonomousName = "Gear Left Side Blue";
 	    		break;
 	    	case 4:
 	    		//mPropertyReader.parseAutonomousFile("home/lvuser/GearRightSide.txt");
-	    		autonomousName = "Gear Right Side";
+	    		autonomousName = "Gear Right Side Blue";
 	    		break;
-	    	case 5:
-	    		autonomousName = "Shoot Balls Everywhere";
+	    	case 5: 
+	    		autonomousName = "Gear Left Side Red";
 	    		break;
 	    	case 6:
+	    		autonomousName = "Gear Right Side Red";
+	    		break;
+	    	case 7:
+	    		autonomousName = "Ten Balls Blue";
+	    		break;
+	    	case 8:
 	    		autonomousName = "Trajectory Test";
+	    		break;
+	    	case 9:
+	    		autonomousName = "Ten Balls Red";
 	    		break;
     		default:
     			//mPropertyReader.parseAutonomousFile("/home/lvuser/DoNothing.txt");
@@ -513,7 +604,6 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Right Encoder Speed: ", mDrive.getRightSpeed());
     	SmartDashboard.putNumber("Gyro: ", mDrive.getGyroAngle());
     	SmartDashboard.putString("Auto mode: ", autonomousName);
-    	SmartDashboard.putNumber("Speed Command", mOI.getSpeedCommand());
     	SmartDashboard.putNumber("Speed", mShooter.getSpeed());
     	SmartDashboard.putBoolean("Is shooter ready?", mShooter.isTargetSpeed());
     	SmartDashboard.putBoolean("Is drive inverted?", mDrive.isInverted());

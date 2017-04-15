@@ -10,7 +10,7 @@ public class OI
 	private static OI instance = null;
 	private final Drive mDrive;
 	private final Shooter mShooter;
-	//private final Intake mIntake;
+	private final Intake mIntake;
 	private final Climber mClimber;
 	private final Vision mVision;
 	public XboxController driverGamepad;
@@ -49,7 +49,7 @@ public class OI
 		//Initialize subsystems
 		mDrive = Drive.getInstance();
 		mShooter = Shooter.getInstance();
-		//mIntake = Intake.getInstance();
+		mIntake = Intake.getInstance();
 		mClimber = Climber.getInstance();
 		mVision = Vision.getInstance();
 		
@@ -78,16 +78,16 @@ public class OI
 			speedCommand = Math.pow(speedCommand,2);
 			mDrive.setOpenLoop(true);
 		} else if (speedCommand < 0){
-			speedCommand = (-1.) * Math.pow(speedCommand,2); 
+			speedCommand = (-1) * Math.pow(speedCommand,2); 
 			mDrive.setOpenLoop(true);
 		}
 		
 		if (turnCommand > 0) {
-			turnCommand = Math.pow(turnCommand,2);
+			turnCommand = Math.pow(turnCommand,3);
 			mDrive.setOpenLoop(true);
 
 		} else if (turnCommand < 0){
-			turnCommand = (-1.) * Math.pow(turnCommand,2);
+			turnCommand = Math.pow(turnCommand,3);
 			mDrive.setOpenLoop(true);
 		}
 		
@@ -191,28 +191,10 @@ public class OI
 		 *  
 		*/
 		
-		//Change shooter hood angle (only two states)
-//		if (driverGamepad.getXButton()){
-//			mShooter.setLargeAngle();
-//		}
-//		else if (driverGamepad.getAButton()){
-//			mShooter.setSmallAngle();
-//		}
-		
-//		if (operatorGamepad.getLeftTrigger()){
-//			mShooter.setConstantWheels(0.8);
-//			//mShooter.setTransport(0.6);
-//		}
-//		else {
-//			mShooter.setConstantWheels(0.0);
-//			//mShooter.setTransport(0.0);
-//		}
-		
-		
-//		//Run the shooter wheels to speed
+				//Run the shooter wheels to speed
 		if (operatorGamepad.getLeftTrigger())
 		{
-			//The values for the constant wheel speed shot	 need to be tuned
+			//The values for the constant wheel speed shot need to be tuned
 			if(!isStartTimeSet){
 				startTime = timer.get();
 				isStartTimeSet = true;
@@ -234,14 +216,13 @@ public class OI
 			mShooter.setWheels(0, 0, 0);
 		}
 		
-		
 		//Fire the fuel
 		if(operatorGamepad.getRightTrigger())
 		{
 			if(mShooter.isTargetSpeed()){
 				mShooter.setBallPath(0.8);
 				mShooter.setCyclone(0.5);
-				mShooter.setTransport(-8.0);
+				mShooter.setTransport(-1.0);
 			}
 		}
 		else
@@ -251,53 +232,22 @@ public class OI
 			mShooter.setTransport(0.0);
 		}
 		
-		if(operatorGamepad.getAButton() && !mDrive.getPlateState()){
-			mDrive.raisePlate();
-		}
-		else if(operatorGamepad.getAButton() && mDrive.getPlateState()){
-			mDrive.lowerPlate();
-		}
-		
 		if (operatorGamepad.getLB()){
 			mDrive.lowerPlate();
 		}
 		else if (operatorGamepad.getRB()){
 			mDrive.raisePlate();
 		}
-
-		
-		
-		/*
-		if(driverGamepad.getXButton() && !driverGamepad.getRB()){
-			mIntake.setSpeed(0.7);
-		}
-		else if(!driverGamepad.getXButton() && driverGamepad.getRB()){
-			mIntake.setSpeed(-0.7);
-		}
-		else{
-			mIntake.setSpeed(0.0);
-		}
-			
-		if(driverGamepad.getBButton() && !driverGamepad.getYButton()){
-			mIntake.raise();
-		}
-		
-		else if(!driverGamepad.getBButton() && driverGamepad.getYButton()){
-			mIntake.deploy();
-		}
-		*/
-		
 		
 		//Raise and lower intake
-//		if(operatorGamepad.getYButton()){
-//				//mIntake.deploy();
-//				mIntake.setSpeed(1.0);
-//		}
-//		else if(operatorGamepad.getBButton()){
-//				//mIntake.raise();
-//				mIntake.setSpeed(0.0);
-//		}
-//		
+		if(operatorGamepad.getYButton()){
+				//mIntake.deploy();
+				mIntake.setSpeed(1.0);
+		}
+		else if(operatorGamepad.getBButton()){
+				//mIntake.raise();
+				mIntake.setSpeed(0.0);
+		}
 		
 		//Run climber; hold down to run
 		if(operatorGamepad.getXButton())
@@ -309,6 +259,15 @@ public class OI
 			mClimber.setSpeed(0.0);
 		}
 		
+		//Open/close the gear mech pistons
+		if(operatorGamepad.getStartButton())
+		{
+			mShooter.setLargeAngle();
+		}
+		else if (operatorGamepad.getBackButton())
+		{
+			mShooter.setSmallAngle();
+		}
 	}
 	
 	public double getSpeedCommand(){
