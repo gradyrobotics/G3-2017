@@ -26,7 +26,7 @@ public class Shooter extends G3Subsystem {
 		counter = new Counter(Constants.bannerSensorPWM);
 
 		shooterMotors = new VictorSP(Constants.shooterMotorsPWM);
-		shooterMotors2 = new VictorSP(Constants.intakeMotorPWM);
+		shooterMotors2 = new VictorSP(Constants.shooterMotorsPWM_2);
 		shooterTransport = new VictorSP(Constants.shooterTransportPWM);
 		cyclone = new VictorSP(Constants.cycloneMotorPWM);
 		ballPath = new VictorSP(Constants.ballPathMotorPWM);
@@ -46,12 +46,12 @@ public class Shooter extends G3Subsystem {
 	
 	public void setWheels(double wheelSpeed, double lowMotorPower, double highMotorPower){
 		if (getSpeed() < wheelSpeed){
-			shooterMotors.set(-highMotorPower);
-			shooterMotors2.set(highMotorPower);
+			shooterMotors.set(highMotorPower);
+			shooterMotors2.set(-highMotorPower);
 		}
 		else{
-			shooterMotors.set(-lowMotorPower);
-			shooterMotors2.set(lowMotorPower);
+			shooterMotors.set(lowMotorPower);
+			shooterMotors2.set(-lowMotorPower);
 		}
 		targetSpeed = wheelSpeed;
 		
@@ -66,8 +66,8 @@ public class Shooter extends G3Subsystem {
 	
 	public void setConstantWheels(double speed)
 	{
-		shooterMotors2.set(speed);
-		shooterMotors.set(-speed);
+		shooterMotors.set(speed);
+		shooterMotors2.set(-speed);
 	}
 	public void setTransport(double speed){
 		shooterTransport.set(speed);

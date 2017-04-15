@@ -114,10 +114,10 @@ public class Drive extends G3Subsystem
     
     public void lineUpGoal(){
     	if(mVision.getXOffset() > 3){
-    		driveSpeedTurn(0.0, 0.05 * mVision.getXOffset());
+    		driveSpeedTurn(0.0, 0.2);
     	}
     	else if(mVision.getXOffset() < -3){
-    		driveSpeedTurn(0.0, 0.05 * mVision.getXOffset());
+    		driveSpeedTurn(0.0, -0.2);
     	}
     	else{
     		liningUpState = false;
